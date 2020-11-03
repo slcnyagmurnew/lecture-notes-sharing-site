@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Moon.Entities;
 using Moon.Models;
 using Moon.SessionExtensions;
+using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Moon.Controllers
 {
@@ -26,9 +28,45 @@ namespace Moon.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string currentFilter, string SearchCode, int? pageNumber, int SearchGroup)
         {
-            return View(_context.Files.ToList());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentCourseFilter"] = SearchCode;
+            ViewData["CurrentFilter"] = SearchGroup;
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            var posts = from s in _context.Files
+                        select s;
+            switch (sortOrder)
+            {
+                case "Date":
+                    posts = posts.OrderBy(s => s.CreatedOn);
+                    break;
+                case "date_desc":
+                    posts = posts.OrderByDescending(s => s.CreatedOn);
+                    break;
+                default:
+                    posts = posts.OrderByDescending(s => s.CreatedOn);
+                    break;
+            }
+            if (!String.IsNullOrEmpty(SearchCode) && SearchGroup >= 100)
+            {
+                posts = posts.Where(s => s.CourseCode.Contains(SearchCode) && s.Category == SearchGroup);
+            }
+            if (!String.IsNullOrEmpty(SearchCode))
+            {
+                posts = posts.Where(s => s.CourseCode.Contains(SearchCode));
+            }
+            if (SearchCode != null)
+            {
+                pageNumber = 8;
+            }
+            else
+            {
+                SearchCode = currentFilter;
+            }
+            int pageSize = 1;
+            return View(posts.ToPagedList(pageNumber ?? 1, pageSize));
+            // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
         }
 
         public IActionResult LogOut(Student student)
@@ -198,6 +236,7 @@ namespace Moon.Controllers
             }
             return View();
         }
+
         public IActionResult Delete(string id)
         {
             IEnumerable<Files> Files = _context.Files.Where(f => f.DocumentId.Equals(id));

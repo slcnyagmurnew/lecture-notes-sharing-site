@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Moon.Entities;
 using Moon.Models;
 using Moon.SessionExtensions;
+using PagedList.Core;
 
 namespace Moon.Controllers
 {
@@ -21,7 +22,7 @@ namespace Moon.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string sortOrder,string currentFilter,string SearchCode,int? pageNumber, int SearchGroup)
+        public IActionResult Index(string sortOrder,string currentFilter,string SearchCode,int? pageNumber, int SearchGroup)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["CurrentCourseFilter"] = SearchCode;
@@ -64,7 +65,7 @@ namespace Moon.Controllers
                 return RedirectToAction("Index", "Student");
             }
             int pageSize = 8;
-            return View(await PaginatedList<Files>.CreateAsync(posts.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(posts.ToPagedList(pageNumber ?? 1, pageSize));
             // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
         }
 

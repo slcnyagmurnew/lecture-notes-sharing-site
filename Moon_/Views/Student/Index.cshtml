@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Moon.Entities.Files>
+﻿@model PagedList.Core.IPagedList<Moon.Entities.Files>
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
@@ -6,13 +6,16 @@
 }
 @using Microsoft.AspNetCore.Http;
 @inject IHttpContextAccessor HttpContextAccessor
+@addTagHelper *, ReflectionIT.Mvc.Paging
 
 <!DOCTYPE html>
 <html>
-<head>
+<head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="~/StudentStyles/css/index_.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 
@@ -25,50 +28,95 @@
                     <label>@HttpContextAccessor.HttpContext.Session.GetString("id")<Student></label>
                 </div>
             </div>
-            <table class="table">
-                <thead>
-                    <tr class="table-striped" style="background-color:aliceblue">
-                        <th>Title</th>
-                        <th>Course</th>
-                        <th>Lecturer</th>
-                        <th>Owner</th>
-                        <th>Date</th>
-                        <th>Like</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                    <tr class="table-condensed">
-                        <td class="tab-content">
-                            <a asp-action="DisplayPDF" asp-route-id="@item.DocumentId">@Html.DisplayFor(modelItem => item.Title)</a>
-                        </td>
-                        <td class="tab-content">
-                            @Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)
-                        </td>
-                        <td class="tab-content">
-                            @Html.DisplayFor(modelItem => item.Lecturer)
-                        </td>
-                        <td class="tab-content">
-                            @Html.DisplayFor(modelItem => item.ownerId)
-                        </td>
-                        <td class="tab-content">
-                            @Html.DisplayFor(modelItem => item.CreatedOn)
-                        </td>
-                        <td class="tab-content">
-                            @Html.DisplayFor(modelItem => item.Likes)
-                        </td>
-                        <td class="tab-content">
-                            <a asp-action="DisplayPDF" asp-route-id="@item.DocumentId">Details</a> |
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
+            <div class="row">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="table-striped" style="background-color:aliceblue">
+                            <th>Title</th>
+                            <th>Course</th>
+                            <th>Lecturer</th>
+                            <th>Owner</th>
+                            <th><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Date</a></th>
+                            <th>Like</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr class="table-condensed">
+                            <td class="tab-content">
+                                <a asp-action="DisplayPDF" asp-route-id="@item.DocumentId">@Html.DisplayFor(modelItem => item.Title)</a>
+                            </td>
+                            <td class="tab-content">
+                                <a>@Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)</a>
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.Lecturer)
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.ownerId)
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.Likes)
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.Likes)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                @{
+                    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                }
+
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageNumber - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageNumber + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="column" style="background-color:#ccc;">
+        <div class="column" style="background-color:#ddd;">
+            <form asp-action="Index" method="get">
+                <div class="wrapper">
+                    <!--course filter ile controller a value degeri gececek-->
+                    <select name="SearchCode" value="@ViewData["CurrentCourseFilter"]" class="form-control" onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size = 1; this.blur();'>
+                        <option value="ONE">One</option>
+                        <option value="BLM">BLM</option>
+                        <option value="END">Three</option>
+                        <option value="ITB">Four</option>
+                        <option value="STL">Five</option>
+                        <option value="KI">Six</option>
+                        <option value="ISL">Seven</option>
+                        <option value="SEU">Eight</option>
+                        <option value="CI">Nine</option>
+                        <option value="PIE">Ten</option>
+                    </select>
+                </div>
+                <div class="row-group-2">
+                    <div class="form-actions no-color">
+                        <input id="group_value" type="number" placeholder="search a course number.." name="SearchGroup" value="@ViewData["CurrentFilter"]" />
+                        <input value="Search" type="submit" class="btn btn-block" />
+                        <a asp-action="Index">Back to Full List</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <script>
