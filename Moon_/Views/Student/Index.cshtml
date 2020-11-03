@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Moon.Entities.Files>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Home Page User";
+}
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/StudentStyles/css/index_.css" type="text/css" />
+</head>
+<body>
+
+    <!-- !PAGE CONTENT! -->
+    <div class="row">
+        <div class="column" style="background-color:#aaa;">
+            <div class="card">
+                <div class="card-header">
+                    Welcome
+                    <label>@HttpContextAccessor.HttpContext.Session.GetString("id")<Student></label>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr class="table-striped" style="background-color:aliceblue">
+                        <th>Title</th>
+                        <th>Course</th>
+                        <th>Lecturer</th>
+                        <th>Owner</th>
+                        <th>Date</th>
+                        <th>Like</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr class="table-condensed">
+                        <td class="tab-content">
+                            <a asp-action="DisplayPDF" asp-route-id="@item.DocumentId">@Html.DisplayFor(modelItem => item.Title)</a>
+                        </td>
+                        <td class="tab-content">
+                            @Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td class="tab-content">
+                            @Html.DisplayFor(modelItem => item.Lecturer)
+                        </td>
+                        <td class="tab-content">
+                            @Html.DisplayFor(modelItem => item.ownerId)
+                        </td>
+                        <td class="tab-content">
+                            @Html.DisplayFor(modelItem => item.CreatedOn)
+                        </td>
+                        <td class="tab-content">
+                            @Html.DisplayFor(modelItem => item.Likes)
+                        </td>
+                        <td class="tab-content">
+                            <a asp-action="DisplayPDF" asp-route-id="@item.DocumentId">Details</a> |
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column" style="background-color:#ccc;">
+        </div>
+    </div>
+    <script>
+
+    </script>
+
+</body>
+</html>

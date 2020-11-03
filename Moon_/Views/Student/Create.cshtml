@@ -1,0 +1,58 @@
+﻿@model Moon.Entities.Files
+
+@{
+    ViewData["Title"] = "Create Post";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+    <h4>Post</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Title</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Course Code</label>
+                    <input asp-for="CourseCode" class="form-control" />
+                    <span asp-validation-for="CourseCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Category</label>
+                    <input asp-for="Category" class="form-control" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Lecturer</label>
+                    <input asp-for="Lecturer" class="form-control" />
+                    <span asp-validation-for="Lecturer" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Upload File</label>
+                        <input class="form-control" name="formFile" type="file" />
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-default" type="submit" value="Upload" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</body>
+</html>

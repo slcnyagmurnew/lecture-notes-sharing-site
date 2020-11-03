@@ -1,0 +1,42 @@
+﻿@model Moon.StudentViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Add";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+    <link rel="stylesheet" href="~/StudentStyles/css/addStudent.css" type="text/css" />
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+    <div class="block-right">
+        <img class="block-right" src="~/StudentStyles/images/remote learning 2.jpg" />
+        <img class="block-right" src="~/StudentStyles/images/remote discovery.jpg" />
+    </div>
+    <div class="add_student">
+        <form method="post">
+            <img class="block-left" src="~/StudentStyles/images/add icon.jpg" /><br />
+            <label for="id"><b>ID : </b></label>
+            <input class="input-sm" asp-for="Student.id" /><br />
+            <label for="name"><b>Name : </b></label>
+            <input class="input-sm" asp-for="Student.name" /><br />
+            <label for="surname"><b>Surname : </b></label>
+            <input class="input-sm" asp-for="Student.surname" /><br />
+            <label for="password"><b>Department : </b></label>
+            <input class="input-sm" asp-for="Student.department" /><br />
+            <label for="department"><b>Password : </b></label>
+            <input class="input-sm" asp-for="Student.password" /><br />
+            <div class="row">
+                <input type="submit" value="Confirm" />
+            </div>
+        </form>
+    </div>
+    }
+</body>
+</html>

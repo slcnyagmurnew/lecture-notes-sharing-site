@@ -1,0 +1,36 @@
+﻿@model Moon.StudentViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/login_.css" type="text/css" />
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div class="login">
+            <form id="login" method="post">
+                <img src="~/StudentStyles/images/student_icon.jpg" /><br />
+                <label for="id"><b>User Name</b></label>
+                <input asp-for="Student.id" class="input-sm" type="text" id="id" placeholder="Username">
+                <br><br>
+                <label for="password"><b>Password</b></label>
+                <input asp-for="Student.password" class="input-sm" type="text" id="password" placeholder="Password">
+                <br><br>
+                <div class="row">
+                    <input type="submit" value="Submit" />
+                </div>
+            </form>
+        </div>
+    }
+<div class="row">
+    <input type="button" value="Create new Account" onclick="window.location.href = '@Url.Action("Add", "Home")';"  />
+</div>
+</body>
+</html>
