@@ -10,9 +10,17 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Create</title>
+    <style>
+        #errorEmptyBoxes {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-
+    <div class="alert alert-danger alert-dismissible" id="errorEmptyBoxes">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Failed!</strong> Please fill all necessary fields.
+    </div>
     <h4>Post</h4>
     <hr />
     <div class="row">
@@ -21,7 +29,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label class="control-label">Title</label>
-                    <input asp-for="Title" class="form-control" />
+                    <input asp-for="Title" class="form-control" id="title" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -32,7 +40,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Course Code</label>                    
+                    <label class="control-label">Course Code</label>
                     <div class="col-md-6">
                         @Html.DropDownListFor(m => m.Category, ViewBag.Category as SelectList, "select category", htmlAttributes: new { @class = "form-control", @id = "category" })
                         <span asp-validation-for="Category" class="text-danger"></span>
@@ -40,15 +48,15 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Lecturer</label>
-                    <input asp-for="Lecturer" class="form-control" />
+                    <input asp-for="Lecturer" class="form-control" id="lecturer" />
                     <span asp-validation-for="Lecturer" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Upload File</label>
-                    <input class="form-control" name="formFile" type="file" />
+                    <input class="form-control" name="formFile" type="file" id="file" />
                 </div>
                 <div class="form-group">
-                    <input class="btn btn-default" type="submit" value="Upload" />
+                    <input class="btn btn-default" type="submit" onclick="return validateForm()" value="Upload" />
                 </div>
             </form>
         </div>
@@ -57,10 +65,23 @@
     <div>
         <a asp-action="Index">Back to List</a>
     </div>
+    <script type="text/javascript">
+        function validateForm() {
+            var title = document.getElementById("title").value;
+            var course = document.getElementById("courseSec").value;
+            var category = document.getElementById("category").value;
+            var lecturer = document.getElementById("lecturer").value;
+
+            if (title == "" || course == "" || category == "" || lecturer == ""
+                || document.getElementById("file").files.length == 0) {
+                $('#errorEmptyBoxes').show();
+                return false;
+            }
+        }
+    </script>
     <script>
         function select() {
             var courseCode = $('#courseSec').val();
-            //alert(courseCode);
             $.ajax({
                 url: '/Student/CourseCategoryDrop?id=' + courseCode,
                 type: "POST",

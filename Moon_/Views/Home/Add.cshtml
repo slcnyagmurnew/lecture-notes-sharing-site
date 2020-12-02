@@ -11,81 +11,88 @@
     <meta name="viewport" content="width=device-width" />
     <title>Add</title>
     <link rel="stylesheet" href="~/StudentStyles/css/addStudent.css" type="text/css" />
+    <style>
+        #errorEmptyBoxes {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    @using (Html.BeginForm("Add","Home",FormMethod.Post))
+    <div class="alert alert-danger alert-dismissible" id="errorEmptyBoxes">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Failed!</strong> Please fill all necessary fields.
+    </div>
+    @using (Html.BeginForm("Add", "Home", FormMethod.Post))
     {
-    <div class="block-right">
-        <img class="block-right" src="~/StudentStyles/images/ytulogopng.png" />
-    </div>
-    <div class="add_student">
-        @Html.ValidationSummary()
-        <div class="form-group">
-            @Html.LabelFor(m => m.name, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+        <div class="block-right">
+            <img class="block-right" src="~/StudentStyles/images/ytulogopng.png" />
+        </div>
+        <div class="add_student">
+            @Html.ValidationSummary()
+            <div class="form-group">
+                @Html.LabelFor(m => m.name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.name, new { @class = "form-control", @id = "name" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.surname, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.surname, new { @class = "form-control", @id = "surname" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.id, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.id, new { @class = "form-control", @id = "stdId" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.department, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.department, new { @class = "form-control", @id = "dept" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.password, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.password, new { @class = "form-control", @id = "passWord" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.confirmPassword, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control", @id = "passWordConfirm" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.email, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", @id = "email" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" onclick="return validateForm()" value="Register" />
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.surname, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.surname, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.id, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.id, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.department, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.department, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.password, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.password, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.confirmPassword, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.email, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" class="btn btn-default" value="Register" />
-            </div>
-        </div><!--
-        <form method="post">
-            <img class="block-left" src="~/StudentStyles/images/add icon.jpg" /><br />
-            <label for="name"><b>Name : </b></label>
-            <input class="input-sm" asp-for="name" /><br />
-            <label for="surname"><b>Surname : </b></label>
-            <input class="input-sm" asp-for="surname" /><br />
-            <label for="id"><b>ID : </b></label>
-            <input class="input-sm" asp-for="id" /><br />
-            <label for="password"><b>Department : </b></label>
-            <input class="input-sm" asp-for="department" /><br />
-            <label for="department"><b>Password : </b></label>
-            <input class="input-sm" asp-for="password" /><br />
-            <label for="department"><b>Confirm Password : </b></label>
-            <input class="input-sm" asp-for="password" /><br />
-            <div class="row">
-                <input type="submit" value="Confirm" />
-            </div>
-        </form>-->
-    </div>
     }
+    <script type="text/javascript">
+        function validateForm() {
+            var name = document.getElementById("name").value;
+            var name = document.getElementById("surname").value;
+            var username = document.getElementById("stdId").value;
+            var dept = document.getElementById("dept").value;
+            var password = document.getElementById("passWord").value;
+            var passwordConfirm = document.getElementById("passWordConfirm").value;
+            var email = document.getElementById("email").value;
+            if (username == "" || password == "" || name == "" || surname == "" || dept == ""
+                || passwordConfirm == "" || email == "") {
+                $('#errorEmptyBoxes').show();
+                return false;
+            }
+        }
+    </script>
 </body>
 </html>

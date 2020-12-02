@@ -183,13 +183,13 @@ namespace Moon.Controllers
 
                 if(user == null)
                 {
-                    ModelState.AddModelError("", "This username has not been created");
+                    ModelState.AddModelError("", "User does not exists, please create new account.");
                     return View(model);
                 }
 
                 if(! await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    ModelState.AddModelError("", "Please confirm your account");
+                    ModelState.AddModelError("", "Please confirm your account.");
                     return View(model);
                 }
 

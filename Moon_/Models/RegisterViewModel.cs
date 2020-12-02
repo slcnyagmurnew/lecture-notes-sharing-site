@@ -5,15 +5,15 @@ namespace Moon_.Models
 {
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Please enter your name.")]
         [Display(Name = "Name")]
         public string name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your surname.")]
         [Display(Name = "Surname")]
         public string surname { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your username.")]
         [Display(Name = "User name")]
         public string id { get; set; }
 
@@ -32,7 +32,7 @@ namespace Moon_.Models
         [Compare("password", ErrorMessage = "The password and confirmation password do not match.")]
         public string confirmPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter your e-mail address.")]
         [EmailAddress]
         [Display(Name = "E-mail")]
         public string email { get; set; }

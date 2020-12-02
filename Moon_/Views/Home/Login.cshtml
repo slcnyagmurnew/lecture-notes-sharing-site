@@ -10,30 +10,39 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="~/css/login_.css" type="text/css" />
+    <style>
+        #errorEmptyBoxes{
+            display: none;
+        }
+    </style>
 </head>
 <body>
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+    <div class="alert alert-danger alert-dismissible" id="errorEmptyBoxes">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Failed!</strong> Please enter your username and password.
+    </div>
     @using (Html.BeginForm())
     {
-        @Html.ValidationSummary()
         <div class="login">
-            <form id="login" method="post">
+            <form id="loginForm" runat="server" method="post">
                 <img src="~/StudentStyles/images/student_icon.jpg" /><br />
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Student.Id, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.id, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Student.Id, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.id, new { @class = "form-control", @id = "stdId" })
                     </div>
                 </div>
                 <br><br>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Student.Password, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.password, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Student.Password, new { @class = "form-control" })
+                        @Html.PasswordFor(m => m.password, new { @class = "form-control", @id = "passWord" })
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" class="btn btn-default" value="Submit" />
+                        <input id="submitBtn" type="submit" class="btn btn-success" onclick="return validateForm();" value="Submit" />
                     </div>
                 </div>
             </form>
@@ -42,5 +51,15 @@
     <div class="row">
         <input type="button" value="Create new Account" onclick="window.location.href = '@Url.Action("Add", "Home")';" />
     </div>
+    <script type="text/javascript">
+        function validateForm() {
+            var username = document.getElementById("stdId").value;
+            var password = document.getElementById("passWord").value;
+            if (username == "" || password == "") {
+                $('#errorEmptyBoxes').show();
+                return false;
+            }
+        }
+    </script>
 </body>
 </html>
