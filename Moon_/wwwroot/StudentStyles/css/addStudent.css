@@ -8,30 +8,6 @@ form{
     margin-top: 100px;
     margin-bottom: 250px;
 }
-/*tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-}
-
-tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-  
-    position: absolute;
-    z-index: 1;
-    top: -5px;
-    right: 105%;
-}
-
-tooltip:hover .tooltiptext {
-    visibility: visible;
-}*/
 img.block-left {
     width: 100px;
     margin-left: 250px;
@@ -72,14 +48,14 @@ div.block-right{
     position: absolute;
     right: 0;
     width: 600px;
-    top: 0;
+    top: 150px;
     height: 600px;
     background-color: #808080;
     text-align: center;
 }
 img.block-right{
     width: 600px;
-    height: 390px;
+    height: 600px;
 }
 img.block-right:hover {
     transform: scale(1.2);
