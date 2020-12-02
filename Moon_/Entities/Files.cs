@@ -22,7 +22,7 @@ namespace Moon.Entities
         public DateTime? CreatedOn { get; set; }
         public string ownerId { get; set; }
         public string Title { get; set; }
-        public int Category { get; set; }
+        public string Category { get; set; }
         public string CourseCode { get; set; }
         public string Lecturer { get; set; }
         public int Likes { get; set; }

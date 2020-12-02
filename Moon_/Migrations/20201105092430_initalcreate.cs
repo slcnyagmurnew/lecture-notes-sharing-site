@@ -18,7 +18,7 @@ namespace Moon_.Migrations
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     ownerId = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
-                    Category = table.Column<int>(nullable: false),
+                    Category = table.Column<string>(nullable: true),
                     CourseCode = table.Column<string>(nullable: true),
                     Lecturer = table.Column<string>(nullable: true),
                     Likes = table.Column<int>(nullable: false)
@@ -27,30 +27,12 @@ namespace Moon_.Migrations
                 {
                     table.PrimaryKey("PK_Files", x => x.DocumentId);
                 });
-                
-            migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    name = table.Column<string>(nullable: true),
-                    surname = table.Column<string>(nullable: true),
-                    id = table.Column<string>(nullable: false),
-                    password = table.Column<string>(nullable: true),
-                    department = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.id);
-                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Files");
-
-            migrationBuilder.DropTable(
-                name: "Students");
         }
     }
 }

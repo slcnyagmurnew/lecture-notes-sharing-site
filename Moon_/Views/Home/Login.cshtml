@@ -1,4 +1,4 @@
-﻿@model Moon.StudentViewModel
+﻿@model StudentViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Login";
@@ -14,23 +14,33 @@
 <body>
     @using (Html.BeginForm())
     {
+        @Html.ValidationSummary()
         <div class="login">
             <form id="login" method="post">
                 <img src="~/StudentStyles/images/student_icon.jpg" /><br />
-                <label for="id"><b>User Name</b></label>
-                <input asp-for="Student.id" class="input-sm" type="text" id="id" placeholder="Username">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Student.Id, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Student.Id, new { @class = "form-control" })
+                    </div>
+                </div>
                 <br><br>
-                <label for="password"><b>Password</b></label>
-                <input asp-for="Student.password" class="input-sm" type="text" id="password" placeholder="Password">
-                <br><br>
-                <div class="row">
-                    <input type="submit" value="Submit" />
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Student.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Student.Password, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-default" value="Submit" />
+                    </div>
                 </div>
             </form>
         </div>
     }
-<div class="row">
-    <input type="button" value="Create new Account" onclick="window.location.href = '@Url.Action("Add", "Home")';"  />
-</div>
+    <div class="row">
+        <input type="button" value="Create new Account" onclick="window.location.href = '@Url.Action("Add", "Home")';" />
+    </div>
 </body>
 </html>

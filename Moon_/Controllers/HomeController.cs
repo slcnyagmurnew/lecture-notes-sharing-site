@@ -3,12 +3,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Moon.Entities;
 using Moon.Models;
 using Moon.SessionExtensions;
 using PagedList.Core;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Moon_.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace Moon.Controllers
 {
@@ -16,17 +22,94 @@ namespace Moon.Controllers
     public class HomeController : Controller
     {
         private readonly StudentContext _context;
+        private UserManager<Student> _userManager;
+        private SignInManager<Student> _signInManager;
+        private IEmailSender _emailSender;
 
-        public HomeController(StudentContext context)
+        readonly JsonDataHelper _dataHelper = new JsonDataHelper();
+
+        public HomeController(StudentContext context, UserManager<Student> userManager, SignInManager<Student> signInManager, IEmailSender emailSender)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _emailSender = emailSender;
         }
 
-        public IActionResult Index(string sortOrder,string currentFilter,string SearchCode,int? pageNumber, int SearchGroup)
+        public IActionResult Index(string sortOrder, string currentFilter, string SearchCode, int? pageNumber, string GroupValue)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["CurrentCourseFilter"] = SearchCode;
-            ViewData["CurrentFilter"] = SearchGroup;
+            ViewData["CurrentFilter"] = SearchCode;
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            var posts = from s in _context.Files
+                        select s;
+            switch (sortOrder)
+            {
+                case "Date":
+                    posts = posts.OrderBy(s => s.CreatedOn);
+                    break;
+                case "date_desc":
+                    posts = posts.OrderByDescending(s => s.CreatedOn);
+                    break;
+                default:
+                    posts = posts.OrderByDescending(s => s.CreatedOn);
+                    break;
+            }
+            if (!String.IsNullOrEmpty(SearchCode) && !String.IsNullOrEmpty(GroupValue))
+            {
+                posts = posts.Where(s => s.CourseCode.Equals(SearchCode) && s.Category.Equals(GroupValue));
+            }
+            else if (!String.IsNullOrEmpty(SearchCode))
+            {
+                posts = posts.Where(s => s.CourseCode.Equals(SearchCode));
+            }
+            else { }
+            if (SearchCode != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                SearchCode = currentFilter;
+            }
+            int pageSize = 8;
+
+            ViewBag.CourseCode = new SelectList(_dataHelper.GetDict().Keys.ToList());
+            var obj = HttpContext.Session.GetObject<Student>("student");
+            if (obj != null)
+            {
+                return RedirectToAction("Index", "Student");
+            }
+            return View(posts.ToPagedList(pageNumber ?? 1, pageSize));
+            // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
+        }
+
+        [HttpPost]
+        public IActionResult Index(IFormCollection form)
+        {
+            var optionValue = form["CourseCodeDrop"];
+            var optionCategory = form["GroupValue"];
+            return RedirectToAction("Index", new { SearchCode = optionValue, GroupValue = optionCategory });
+        }
+
+        public JsonResult CourseCategoryDrop(string id)
+        {
+
+            string value = null;
+            if (_dataHelper.GetDict().ContainsKey(id))
+            {
+                value = _dataHelper.GetDict()[id];
+            }
+            List<string> SelectedCategories = value.Split(",").ToList();
+            return Json(SelectedCategories);
+        }
+
+
+  /*      public IActionResult Index(string sortOrder,string currentFilter,string SearchCode,int? pageNumber)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = SearchCode;
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             var posts = from s in _context.Files
                            select s;
@@ -42,9 +125,9 @@ namespace Moon.Controllers
                     posts = posts.OrderByDescending(s => s.CreatedOn);
                     break;
             }
-            if (!String.IsNullOrEmpty(SearchCode) && SearchGroup >= 100)
+           /* if (!String.IsNullOrEmpty(SearchCode) && !String.IsNullOrEmpty(SearchGroup))
             {
-                posts = posts.Where(s => s.CourseCode.Contains(SearchCode) && s.Category == SearchGroup);
+                posts = posts.Where(s => s.CourseCode.Contains(SearchCode) && s.Category.Contains(SearchGroup));
             }
             if (!String.IsNullOrEmpty(SearchCode))
             {
@@ -67,7 +150,7 @@ namespace Moon.Controllers
             int pageSize = 8;
             return View(posts.ToPagedList(pageNumber ?? 1, pageSize));
             // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
-        }
+        } */
 
         public IActionResult About()
         {
@@ -91,26 +174,41 @@ namespace Moon.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(Student student)
+        public async Task<IActionResult> Login(Student student)
         {
+            StudentViewModel model = new StudentViewModel();
             if (ModelState.IsValid)
             {
-                var check = _context.Students.Where(std => std.id.Equals(student.id) && std.password.Equals(student.password)).ToList();
-                if(check.Count > 0)
+                var user = await _userManager.FindByIdAsync(student.Id);
+
+                if(user == null)
                 {
-                    // session baslatma
-                    var bytes = Encoding.UTF8.GetBytes(student.id);
+                    ModelState.AddModelError("", "This username has not been created");
+                    return View(model);
+                }
+
+                if(! await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    ModelState.AddModelError("", "Please confirm your account");
+                    return View(model);
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(user, student.Password, false, false);
+
+                if (result.Succeeded)
+                {
+                    var bytes = Encoding.UTF8.GetBytes(student.Id);
                     HttpContext.Session.Set("id", bytes);
 
-                    var bytes2 = Encoding.UTF8.GetBytes(student.password);
+                    var bytes2 = Encoding.UTF8.GetBytes(student.Password);
                     HttpContext.Session.Set("password", bytes2);
 
                     HttpContext.Session.SetObject("student", student);
-                    return Redirect("Index");
+                    return RedirectToAction("Index", "Student");
                 }
             }
-            
-            return Redirect("Login");
+            ModelState.AddModelError("", "Username or password invalid");
+            return View(model);
         }
 
         public IActionResult Add()
@@ -121,36 +219,39 @@ namespace Moon.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(Student student)
+        public async Task<IActionResult> Add(Student student)
         {
             if (ModelState.IsValid)
             {
-                var check = _context.Students.FirstOrDefault(std => std.id == student.id);
-                if (check == null)
+                var user = new Student()
                 {
-                    _context.Students.Add(student);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else
+                    Name = student.Name,
+                    Surname = student.Surname,
+                    Id = student.Id,
+                    UserName = student.Id,
+                    Department = student.Department,
+                    Email = student.Email,
+                    Password = student.Password,
+                    EmailConfirmed = false
+                };
+
+                var check = await _userManager.CreateAsync(user, student.Password);
+                if (check.Succeeded)
                 {
-                    ViewBag.error = "User already exists";
-                    return View();
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var url = Url.Action("ConfirmEmail", "Home", new
+                    {
+                        userId = user.Id,
+                        token = code
+                    });
+                    await _emailSender.SendEmailAsync(user.Email, "Please confirm your account",$"Click to <a href='https://localhost:44392{url}'>link</a> for confirmation");
+                    
+                    return RedirectToAction("Login","Home");
                 }
+                ModelState.AddModelError("", "This mail already exists...");
             }
 
             return View();
-        }
-
-        public IActionResult LogOut(Student student)
-        {
-            var obj = HttpContext.Session.GetObject<Student>("student");
-            if (obj != null)
-            {
-                return RedirectToAction("LogOut", "Student");
-            }
-            // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
-            return View(_context.Files.ToList());
         }
         
         public IActionResult Privacy()
@@ -163,5 +264,28 @@ namespace Moon.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public async Task<ActionResult> ConfirmEmail(string userId, string token)
+        {
+            if(userId == null || token == null)
+            {
+                TempData["Message"] = "Unvalid token";
+                return View();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user != null)
+            {
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    TempData["Message"] = "Account has been approved";
+                    return View();
+                }
+            }
+            TempData["Message"] = "No user found";
+            return View();
+        }
     }
 }
+

@@ -10,7 +10,7 @@ using Moon.Models;
 namespace Moon_.Migrations
 {
     [DbContext(typeof(StudentContext))]
-    [Migration("20201102200653_initalcreate")]
+    [Migration("20201105092430_initalcreate")]
     partial class initalcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,7 @@ namespace Moon_.Migrations
                     b.Property<string>("DocumentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Category");
+                    b.Property<string>("Category");
 
                     b.Property<string>("CourseCode");
 
@@ -53,23 +53,6 @@ namespace Moon_.Migrations
                     b.ToTable("Files");
                 });
 
-            modelBuilder.Entity("Moon.Entities.Student", b =>
-                {
-                    b.Property<string>("id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("department");
-
-                    b.Property<string>("name");
-
-                    b.Property<string>("password");
-
-                    b.Property<string>("surname");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Students");
-                });
 #pragma warning restore 612, 618
         }
     }

@@ -26,13 +26,17 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Course Code</label>
-                    <input asp-for="CourseCode" class="form-control" />
-                    <span asp-validation-for="CourseCode" class="text-danger"></span>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(m => m.CourseCode, ViewBag.CourseCode as SelectList, "select course code", htmlAttributes: new { @class = "form-control", @id = "courseSec", @onchange = "select()" })
+                        <span asp-validation-for="CourseCode" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Category</label>
-                    <input asp-for="Category" class="form-control" />
-                    <span asp-validation-for="Category" class="text-danger"></span>
+                    <label class="control-label">Course Code</label>                    
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(m => m.Category, ViewBag.Category as SelectList, "select category", htmlAttributes: new { @class = "form-control", @id = "category" })
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Lecturer</label>
@@ -41,7 +45,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Upload File</label>
-                        <input class="form-control" name="formFile" type="file" />
+                    <input class="form-control" name="formFile" type="file" />
                 </div>
                 <div class="form-group">
                     <input class="btn btn-default" type="submit" value="Upload" />
@@ -53,6 +57,24 @@
     <div>
         <a asp-action="Index">Back to List</a>
     </div>
-
+    <script>
+        function select() {
+            var courseCode = $('#courseSec').val();
+            //alert(courseCode);
+            $.ajax({
+                url: '/Student/CourseCategoryDrop?id=' + courseCode,
+                type: "POST",
+                dataType: "JSON",
+                data: { CourseCode: courseCode },
+                success: function (categories) {
+                    $("#category").html("");
+                    $.each(categories, function (i, category) {
+                        $("#category").append(
+                            $('<option></option>').val(category).html(category));
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>

@@ -1,18 +1,21 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Moon.Entities;
 using Moon.Models;
 using Moon.SessionExtensions;
+using Moon_.Entities;
+using Moon_.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,12 +31,14 @@ namespace Moon.Controllers
             _context = context;
         }
 
-        public IActionResult Index(string sortOrder, string currentFilter, string SearchCode, int? pageNumber, int SearchGroup)
+        readonly JsonDataHelper _dataHelper = new JsonDataHelper();
+
+        public IActionResult Index(string sortOrder, string currentFilter, string SearchCode, int? pageNumber, string GroupValue)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["CurrentCourseFilter"] = SearchCode;
-            ViewData["CurrentFilter"] = SearchGroup;
+            ViewData["CurrentFilter"] = SearchCode;
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
             var posts = from s in _context.Files
                         select s;
             switch (sortOrder)
@@ -48,25 +53,49 @@ namespace Moon.Controllers
                     posts = posts.OrderByDescending(s => s.CreatedOn);
                     break;
             }
-            if (!String.IsNullOrEmpty(SearchCode) && SearchGroup >= 100)
+            if (!String.IsNullOrEmpty(SearchCode) && !String.IsNullOrEmpty(GroupValue))
             {
-                posts = posts.Where(s => s.CourseCode.Contains(SearchCode) && s.Category == SearchGroup);
+                posts = posts.Where(s => s.CourseCode.Equals(SearchCode) && s.Category.Equals(GroupValue));
             }
-            if (!String.IsNullOrEmpty(SearchCode))
+            else if (!String.IsNullOrEmpty(SearchCode))
             {
-                posts = posts.Where(s => s.CourseCode.Contains(SearchCode));
+                posts = posts.Where(s => s.CourseCode.Equals(SearchCode));
             }
+            else { }
             if (SearchCode != null)
             {
-                pageNumber = 8;
+                pageNumber = 1;
             }
             else
             {
                 SearchCode = currentFilter;
             }
-            int pageSize = 1;
+            int pageSize = 8;
+
+            ViewBag.CourseCode = new SelectList(_dataHelper.GetDict().Keys.ToList());
+
             return View(posts.ToPagedList(pageNumber ?? 1, pageSize));
             // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
+        }
+
+        [HttpPost]
+        public IActionResult Index(IFormCollection form)
+        {
+            var optionValue = form["CourseCodeDrop"];
+            var optionCategory = form["GroupValue"];
+            return RedirectToAction("Index", new { SearchCode = optionValue, GroupValue = optionCategory });
+        }
+
+        public JsonResult CourseCategoryDrop(string id)
+        {
+            
+            string value = null;
+            if (_dataHelper.GetDict().ContainsKey(id))
+            {
+                value = _dataHelper.GetDict()[id];
+            }
+            List<string> SelectedCategories = value.Split(",").ToList();
+            return Json(SelectedCategories);
         }
 
         public IActionResult LogOut(Student student)
@@ -184,12 +213,14 @@ namespace Moon.Controllers
             var posts = from s in _context.Files
                         select s;
             var owner = HttpContext.Session.GetObject<Student>("student");
-            posts = posts.Where(s => s.ownerId.Equals(owner.id));
+            posts = posts.Where(s => s.ownerId.Equals(owner.Id));
             return View(posts.AsNoTracking());
         }
 
         public IActionResult Create()
         {
+            ViewBag.CourseCode = new SelectList(_dataHelper.GetDict().Keys.ToList());
+            ViewBag.Category = new SelectList(_dataHelper.GetDict().Values.ToList());
             return View();
         }
         [HttpPost]
@@ -214,7 +245,7 @@ namespace Moon.Controllers
                         Name = newFileName,
                         FileType = fileExtension,
                         CreatedOn = DateTime.Now,
-                        ownerId = owner.id,
+                        ownerId = owner.Id,
                         Title = post.Title,
                         CourseCode = post.CourseCode,
                         Category = post.Category,
@@ -234,7 +265,7 @@ namespace Moon.Controllers
 
                 }
             }
-            return View();
+            return Redirect("Create");
         }
 
         public IActionResult Delete(string id)
@@ -245,5 +276,37 @@ namespace Moon.Controllers
             _context.SaveChanges();
             return Redirect("MyCourses");
         }
+
+        public IActionResult LikeAct(string id)
+        {
+
+            var post = (from s in _context.Files
+                        where s.DocumentId.Equals(id) select s).FirstOrDefault<Files>();
+            var currStd = HttpContext.Session.GetObject<Student>("student");
+            var like = (from l in _context.Likes
+                         where l.DocumentId.Equals(id) && 
+                         l.StudentId.Equals(currStd.Id) select l).FirstOrDefault<Likes>();
+            
+            if (like != null)
+            {
+                _context.Likes.Remove(like);
+                post.Likes -= 1;
+                _context.Files.Update(post);
+            }
+            else
+            {
+                var objLike = new Likes()
+                {
+                    DocumentId = id,
+                    StudentId = currStd.Id
+                };
+                _context.Likes.Add(objLike);
+                post.Likes += 1;
+                _context.Files.Update(post);
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
     }
 }

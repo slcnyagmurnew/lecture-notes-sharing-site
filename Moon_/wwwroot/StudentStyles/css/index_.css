@@ -20,6 +20,10 @@ label {
     font-size: medium;
 }
 
+#dtable {
+    width: 100%;
+}
+
 input {
     margin-top: 5px;
     width: 200px;
@@ -38,4 +42,8 @@ input[type=submit] {
 
 input[type=submit]:hover {
     background-color: #45a049;
+}
+img {
+    width: 20px;
+    height: 20px;
 }

@@ -1,4 +1,4 @@
-﻿@model Moon.StudentViewModel
+﻿@model Moon_.Models.RegisterViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Add";
@@ -13,29 +13,79 @@
     <link rel="stylesheet" href="~/StudentStyles/css/addStudent.css" type="text/css" />
 </head>
 <body>
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Add","Home",FormMethod.Post))
     {
     <div class="block-right">
         <img class="block-right" src="~/StudentStyles/images/remote learning 2.jpg" />
         <img class="block-right" src="~/StudentStyles/images/remote discovery.jpg" />
     </div>
     <div class="add_student">
+        @Html.ValidationSummary()
+        <div class="form-group">
+            @Html.LabelFor(m => m.name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.surname, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.surname, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.id, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.id, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.department, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.department, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.password, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.password, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.confirmPassword, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Register" />
+            </div>
+        </div><!--
         <form method="post">
             <img class="block-left" src="~/StudentStyles/images/add icon.jpg" /><br />
-            <label for="id"><b>ID : </b></label>
-            <input class="input-sm" asp-for="Student.id" /><br />
             <label for="name"><b>Name : </b></label>
-            <input class="input-sm" asp-for="Student.name" /><br />
+            <input class="input-sm" asp-for="name" /><br />
             <label for="surname"><b>Surname : </b></label>
-            <input class="input-sm" asp-for="Student.surname" /><br />
+            <input class="input-sm" asp-for="surname" /><br />
+            <label for="id"><b>ID : </b></label>
+            <input class="input-sm" asp-for="id" /><br />
             <label for="password"><b>Department : </b></label>
-            <input class="input-sm" asp-for="Student.department" /><br />
+            <input class="input-sm" asp-for="department" /><br />
             <label for="department"><b>Password : </b></label>
-            <input class="input-sm" asp-for="Student.password" /><br />
+            <input class="input-sm" asp-for="password" /><br />
+            <label for="department"><b>Confirm Password : </b></label>
+            <input class="input-sm" asp-for="password" /><br />
             <div class="row">
                 <input type="submit" value="Confirm" />
             </div>
-        </form>
+        </form>-->
     </div>
     }
 </body>

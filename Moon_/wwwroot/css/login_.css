@@ -16,8 +16,8 @@ img {
 }
 
 label {
-    margin-right: 20px;
     display: inline-block;
+    margin-right: 20px;
     font-family: Arial;
     text-align: right;
     width: 150px;
@@ -25,8 +25,10 @@ label {
 }
 
 input[type=text] {
+    display: inline-block;
     width: 250px;
     margin-left: inherit;
+    float: left;
 }
 
 input[type=submit] {
@@ -38,6 +40,7 @@ input[type=submit] {
     cursor: pointer;
     float: right;
     margin-right: 14px;
+    float: left;
 }
 
     input[type=submit]:hover {

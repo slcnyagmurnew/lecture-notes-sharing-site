@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Moon_.Models;
 
 namespace Moon
 {
@@ -14,6 +15,7 @@ namespace Moon
     {
         public static void Main(string[] args)
         {
+            JsonDataHelper.CreateDict();
             CreateWebHostBuilder(args).Build().Run();
         }
 
