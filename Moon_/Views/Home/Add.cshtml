@@ -15,20 +15,30 @@
         #errorEmptyBoxes {
             display: none;
         }
+        #errorDoNotMatchPassword{
+            display: none;
+        }
     </style>
 </head>
 <body>
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
     <div class="alert alert-danger alert-dismissible" id="errorEmptyBoxes">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>Failed!</strong> Please fill all necessary fields.
     </div>
+    <div class="alert alert-danger alert-dismissible" id="errorDoNotMatchPassword">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Failed!</strong> Passwords do not match.
+    </div>
     @using (Html.BeginForm("Add", "Home", FormMethod.Post))
     {
+        <div class="block-left">
+            <img class="block-left" src="~/StudentStyles/images/add icon.jpg" />
+        </div>
         <div class="block-right">
             <img class="block-right" src="~/StudentStyles/images/ytulogopng.png" />
         </div>
         <div class="add_student">
-            @Html.ValidationSummary()
             <div class="form-group">
                 @Html.LabelFor(m => m.name, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
@@ -87,10 +97,18 @@
             var password = document.getElementById("passWord").value;
             var passwordConfirm = document.getElementById("passWordConfirm").value;
             var email = document.getElementById("email").value;
+
             if (username == "" || password == "" || name == "" || surname == "" || dept == ""
                 || passwordConfirm == "" || email == "") {
                 $('#errorEmptyBoxes').show();
                 return false;
+            }
+            else if (password != passwordConfirm) {
+                $('#errorDoNotMatchPassword').show();
+                return false;
+            }
+            else {
+                return true;
             }
         }
     </script>

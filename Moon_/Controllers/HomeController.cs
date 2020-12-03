@@ -221,6 +221,7 @@ namespace Moon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(Student student)
         {
+            RegisterViewModel model = new RegisterViewModel();
             if (ModelState.IsValid)
             {
                 var user = new Student()
@@ -251,7 +252,7 @@ namespace Moon.Controllers
                 ModelState.AddModelError("", "This mail already exists...");
             }
 
-            return View();
+            return View(model);
         }
         
         public IActionResult Privacy()
