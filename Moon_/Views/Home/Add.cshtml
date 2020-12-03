@@ -11,85 +11,80 @@
     <meta name="viewport" content="width=device-width" />
     <title>Add</title>
     <link rel="stylesheet" href="~/StudentStyles/css/addStudent.css" type="text/css" />
-    <style>
-        #errorEmptyBoxes {
-            display: none;
-        }
-        #errorDoNotMatchPassword{
-            display: none;
-        }
-    </style>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
     @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
-    <div class="alert alert-danger alert-dismissible" id="errorEmptyBoxes">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Failed!</strong> Please fill all necessary fields.
+  <!-- <div class="block-left">
+        <img class="block-left" src="~/StudentStyles/images/add icon.jpg" />
     </div>
-    <div class="alert alert-danger alert-dismissible" id="errorDoNotMatchPassword">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Failed!</strong> Passwords do not match.
+    <div class="block-right">
+        <img class="block-right" src="~/StudentStyles/images/ytulogopng.png" />
+    </div> -->
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Add" class="form-horizontal" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="name" class="text-danger"></span>
+                        <input asp-for="name" class="form-control" id="title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Surname</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="surname" class="text-danger"></span>
+                        <input asp-for="surname" class="form-control" id="title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">User Name</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="id" class="text-danger"></span>
+                        <input asp-for="id" class="form-control" id="title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Department</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="department" class="text-danger"></span>
+                        <input asp-for="department" class="form-control" id="title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Password</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="password" class="text-danger"></span>
+                        <input asp-for="password" class="form-control" id="title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Confirm Password</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="confirmPassword" class="text-danger"></span>
+                        <input asp-for="confirmPassword" class="form-control" id="title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">E-mail</label>
+                    <div class="col-sm-10">
+                        <span asp-validation-for="email" class="text-danger"></span>
+                        <input asp-for="email" class="form-control" id="title" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-default" value="Register" />
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    @using (Html.BeginForm("Add", "Home", FormMethod.Post))
-    {
-        <div class="block-left">
-            <img class="block-left" src="~/StudentStyles/images/add icon.jpg" />
-        </div>
-        <div class="block-right">
-            <img class="block-right" src="~/StudentStyles/images/ytulogopng.png" />
-        </div>
-        <div class="add_student">
-            <div class="form-group">
-                @Html.LabelFor(m => m.name, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.name, new { @class = "form-control", @id = "name" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.surname, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.surname, new { @class = "form-control", @id = "surname" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.id, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.id, new { @class = "form-control", @id = "stdId" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.department, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.department, new { @class = "form-control", @id = "dept" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.password, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.PasswordFor(m => m.password, new { @class = "form-control", @id = "passWord" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.confirmPassword, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.PasswordFor(m => m.confirmPassword, new { @class = "form-control", @id = "passWordConfirm" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.email, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.email, new { @class = "form-control", @id = "email" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default" onclick="return validateForm()" value="Register" />
-                </div>
-            </div>
-        </div>
-    }
     <script type="text/javascript">
-        function validateForm() {
+        /*function validateForm() {
             var name = document.getElementById("name").value;
             var name = document.getElementById("surname").value;
             var username = document.getElementById("stdId").value;
@@ -102,15 +97,15 @@
                 || passwordConfirm == "" || email == "") {
                 $('#errorEmptyBoxes').show();
                 return false;
-            }
-            else if (password != passwordConfirm) {
+            }*/
+        /* else if (password != passwordConfirm) {
                 $('#errorDoNotMatchPassword').show();
                 return false;
             }
             else {
                 return true;
             }
-        }
+        }*/
     </script>
-</body>
+    </body>
 </html>

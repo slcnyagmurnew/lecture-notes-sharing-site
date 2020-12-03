@@ -1,62 +1,37 @@
 ﻿body {
-    background-color: #808080;
+    background-color: whitesmoke;
     text-align: left;
 }
-form{
+form {
     align-content: center;
     display: inline-block;
-    margin-top: 100px;
-    margin-bottom: 250px;
+    margin-top: 200px;
+    white-space: nowrap;
 }
+
+input[type=text] {
+    display: inline-block;
+    width: 200px;
+    float: left;
+    margin-left: 30px;
+}
+input[type=password] {
+    display: inline-block;
+    width: 200px;
+    float: left;
+    margin-left: 30px;
+}
+
 img.block-left {
     width: 100px;
     margin-left: 250px;
     margin-bottom: 10px;
 }
-label {
-    margin-right: 20px;
-    display: inline-block;
-    font-family: Arial;
-    text-align: right;
-    width: 150px;
-    font-size: medium;
-}
-input{
-    margin-top: 5px;
-    width: 200px;
-}
-input[type=submit] {
-    background-color: Highlight;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-    margin-right: 14px;
+img.block-right {
+    width: 600px;
+    height: 600px;
 }
 
-input[type=submit]:hover {
-    background-color: #45a049;
-}
-.row::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-div.block-right{
-    position: absolute;
-    right: 0;
-    width: 600px;
-    top: 150px;
-    height: 600px;
-    background-color: #808080;
-    text-align: center;
-}
-img.block-right{
-    width: 600px;
-    height: 600px;
-}
 img.block-right:hover {
     transform: scale(1.2);
 }

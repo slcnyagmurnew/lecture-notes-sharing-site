@@ -1,13 +1,6 @@
 ﻿body {
     text-align: center;
-    overflow: auto;
-    background-color: #808080;
-}
-
-form {
-    align-content: center;
-    display: inline-block;
-    margin-top: 200px;
+    background-color: whitesmoke;
 }
 
 img {
@@ -15,49 +8,41 @@ img {
     margin-bottom: 50px;
 }
 
-label {
+form {
+    align-content: center;
     display: inline-block;
-    margin-right: 20px;
-    font-family: Arial;
-    text-align: right;
-    width: 150px;
-    font-size: medium;
+    margin-top: 200px;
+    white-space: nowrap;
 }
 
 input[type=text] {
     display: inline-block;
-    width: 250px;
-    margin-left: inherit;
+    width: 200px;
     float: left;
+    margin-left: 30px;
+}
+
+input[type=password] {
+    display: inline-block;
+    width: 200px;
+    float: left;
+    margin-left: 30px;
 }
 
 input[type=submit] {
-    background-color: Highlight;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-    margin-right: 14px;
-    float: left;
-}
-
-    input[type=submit]:hover {
-        background-color: #45a049;
-    }
-
-.row::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-button[type=submit] {
     display: inline-block;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     float: right;
-    margin: 20px 14px;
+    margin-right: 28px;
+}
+
+input[type=button] {
+    display: inline-block;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+    margin: 20px 14px 10px;
 }
