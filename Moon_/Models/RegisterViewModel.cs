@@ -25,6 +25,7 @@ namespace Moon_.Models
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{6,15}$", ErrorMessage = "The password must contains at least 1:alphanumeric uppercase numeric lowercase")]
         [Display(Name = "Password")]
         public string password { get; set; }
 

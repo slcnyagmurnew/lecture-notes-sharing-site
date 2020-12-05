@@ -9,6 +9,7 @@
     float: left;
     width: 50%;
     padding: 10px;
+    height: 240px;
 }
 /* Clear floats after the columns */
 .row:after {

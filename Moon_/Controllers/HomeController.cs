@@ -85,7 +85,12 @@ namespace Moon.Controllers
             {
                 return RedirectToAction("Index", "Student");
             }
-            return View(posts.ToPagedList(pageNumber ?? 1, pageSize));
+            IPagedList<Files> _posts = posts.ToPagedList(pageNumber ?? 1, pageSize);
+            List<Files> _favoriteList = Get_Favorite_Posts();
+
+            var modelView = new ComplexModel(_posts, _favoriteList);
+
+            return View(modelView);
             // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
         }
 
@@ -193,6 +198,12 @@ namespace Moon.Controllers
                     EmailConfirmed = false
                 };
 
+                if (_context.Users.Any(x => x.UserName == user.UserName))
+                {
+                    ModelState.AddModelError("", "This user already exists...");
+                    return View(model);
+                }
+
                 var check = await _userManager.CreateAsync(user, student.Password);
                 if (check.Succeeded)
                 {
@@ -244,6 +255,12 @@ namespace Moon.Controllers
             }
             TempData["Message"] = "No user found";
             return View();
+        }
+
+        public List<Files> Get_Favorite_Posts()
+        {
+            List<Files> postList = (from p in _context.Files orderby p.Likes descending select p).Take(5).ToList();
+            return postList;
         }
     }
 }
