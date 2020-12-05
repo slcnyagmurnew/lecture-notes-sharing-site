@@ -16,8 +16,8 @@ namespace Moon.Entities
         [MaxLength(100)]
         public string Name { get; set; }
         [MaxLength(100)]
-        [Required(ErrorMessage = "Please upload pdf document.")]
         public string FileType { get; set; }
+        [MaxLength]
         public byte[] DataFiles { get; set; }
         public DateTime? CreatedOn { get; set; }
         public string ownerId { get; set; }

@@ -5,7 +5,7 @@
 form {
     align-content: center;
     display: inline-block;
-    margin-top: 200px;
+    margin-top: 10px;
     white-space: nowrap;
 }
 
@@ -13,25 +13,54 @@ input[type=text] {
     display: inline-block;
     width: 200px;
     float: left;
-    margin-left: 30px;
+    margin-left: 80px;
+    margin-bottom: 8px;
 }
 input[type=password] {
     display: inline-block;
     width: 200px;
     float: left;
-    margin-left: 30px;
+    margin-left: 80px;
+    margin-bottom: 8px;
+}
+
+input[type=email] {
+    display: inline-block;
+    width: 200px;
+    float: left;
+    margin-left: 80px;
+    margin-bottom: 8px;
+}
+
+input[type=submit] {
+    display: inline-block;
+    float: right;
+    margin-left: 70px;
+    margin-right: 18px;
 }
 
 img.block-left {
-    width: 100px;
-    margin-left: 250px;
-    margin-bottom: 10px;
+    width: 150px;
+    margin: 100px 0px 10px 0px;
+}
+div.block-right {
+    position: absolute;
+    right: 0;
+    width: 600px;
+    top: 150px;
+    height: 600px;
+    text-align: center;
 }
 img.block-right {
+    margin-top: 50px;
     width: 600px;
     height: 600px;
 }
 
 img.block-right:hover {
     transform: scale(1.2);
+}
+span{
+    margin-left: 40px;
+    float: left;
 }

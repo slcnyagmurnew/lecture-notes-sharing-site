@@ -5,10 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Admin\_ViewStart.cshtml" />
+    <Content Remove="Views\Shared\_LayoutStudent.cshtml" />
+    <Content Remove="Views\Student\About.cshtml" />
+    <Content Remove="Views\Student\Contact.cshtml" />
+    <Content Remove="Views\Student\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Models\JsonDataHelper.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Admin\_ViewStart.cshtml" />
     <None Include="Views\Home\About.cshtml" />
     <None Include="Views\Home\Contact.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
@@ -17,8 +26,12 @@
     <None Include="Views\Shared\_CookieConsentPartial.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\Shared\_LayoutStudent.cshtml" />
+    <None Include="Views\Student\About.cshtml" />
+    <None Include="Views\Student\Contact.cshtml" />
+    <None Include="Views\Student\_ViewStart.cshtml" />
     <None Include="Views\_ViewImports.cshtml" />
-    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="Views\Home\_ViewStart.cshtml" />
     <None Include="wwwroot\images\banner1.svg" />
     <None Include="wwwroot\images\banner2.svg" />
     <None Include="wwwroot\images\banner3.svg" />

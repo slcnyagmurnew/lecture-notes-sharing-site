@@ -5,6 +5,11 @@
     height: 500px;
 }
 
+.column-down {
+    float: left;
+    width: 50%;
+    padding: 10px;
+}
 /* Clear floats after the columns */
 .row:after {
     content: "";
@@ -12,37 +17,39 @@
     clear: both;
 }
 label {
-    margin-right: 20px;
     display: inline-block;
     font-family: Arial;
-    text-align: right;
+    text-align: center;
     width: 200px;
     font-size: medium;
 }
+#courseSec {
+    display: inline-block;
+    width: 200px;
+}
 
+#GroupValue {
+    display: inline-block;
+    margin-top: 5px;
+    width: 200px;
+}
 #dtable {
     width: 100%;
 }
 
 input {
     margin-top: 5px;
-    width: 200px;
+    width: 100px;
 }
 
 input[type=submit] {
-    background-color: Highlight;
-    color: white;
-    padding: 12px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    float: right;
-    margin-right: 14px;
+    margin-top: 5px;
+    margin-left: 100px;
 }
 
-input[type=submit]:hover {
-    background-color: #45a049;
-}
 img {
     width: 20px;
     height: 20px;

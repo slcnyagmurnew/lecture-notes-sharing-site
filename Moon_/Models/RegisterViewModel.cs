@@ -5,6 +5,7 @@ namespace Moon_.Models
 {
     public class RegisterViewModel
     {
+
         [Required(ErrorMessage = "Please enter your name.")]
         [Display(Name = "Name")]
         public string name { get; set; }

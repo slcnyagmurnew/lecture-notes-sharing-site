@@ -4,13 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Moon.Entities;
 using Moon_.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Moon.Models
 {
-    public class StudentContext:IdentityDbContext<Student>
+    public class StudentContext:IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         public StudentContext(DbContextOptions<StudentContext>options):base(options)
         {

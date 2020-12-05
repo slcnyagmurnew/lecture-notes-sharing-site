@@ -9,6 +9,8 @@ namespace Moon.Models
 {
     public class PaginatedList<T> : List<T>
     {
+        public PaginatedList() { }
+
         public int PageIndex { get; private set; }
         public int TotalPages { get; private set; }
 

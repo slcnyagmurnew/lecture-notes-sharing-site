@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +8,6 @@ using Moon.Models;
 using Moon.SessionExtensions;
 using Moon_.Entities;
 using Moon_.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using PagedList.Core;
 using System;
 using System.Collections.Generic;
@@ -17,10 +15,10 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Moon.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class StudentController : Controller
     {
 
@@ -74,7 +72,12 @@ namespace Moon.Controllers
 
             ViewBag.CourseCode = new SelectList(_dataHelper.GetDict().Keys.ToList());
 
-            return View(posts.ToPagedList(pageNumber ?? 1, pageSize));
+            IPagedList<Files> _posts = posts.ToPagedList(pageNumber ?? 1, pageSize);
+            List<Files> _favoriteList = Get_Favorite_Posts();
+
+            var modelView = new ComplexModel(_posts, _favoriteList);
+
+            return View(modelView);
             // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
         }
 
@@ -84,6 +87,20 @@ namespace Moon.Controllers
             var optionValue = form["CourseCodeDrop"];
             var optionCategory = form["GroupValue"];
             return RedirectToAction("Index", new { SearchCode = optionValue, GroupValue = optionCategory });
+        }
+
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
+
+            return View();
         }
 
         public JsonResult CourseCategoryDrop(string id)
@@ -98,7 +115,7 @@ namespace Moon.Controllers
             return Json(SelectedCategories);
         }
 
-        public IActionResult LogOut(Student student)
+        public IActionResult LogOut(string id)
         {
             // alert = logged out successfully
             HttpContext.Session.Clear();
@@ -270,11 +287,12 @@ namespace Moon.Controllers
 
         public IActionResult Delete(string id)
         {
-            IEnumerable<Files> Files = _context.Files.Where(f => f.DocumentId.Equals(id));
-            Files GetFile = Files.First();
-            _context.Files.Remove(GetFile);
+            // alert gerek
+            var post = (from s in _context.Files where s.DocumentId.Equals(id)
+                        select s).FirstOrDefault<Files>();
+            _context.Files.Remove(post);
             _context.SaveChanges();
-            return Redirect("MyCourses");
+            return RedirectToAction("MyCourses");
         }
 
         public IActionResult LikeAct(string id)
@@ -308,5 +326,10 @@ namespace Moon.Controllers
             return RedirectToAction("Index");
         }
 
+        public List<Files> Get_Favorite_Posts()
+        {
+            List<Files> postList = (from p in _context.Files orderby p.Likes descending select p).Take(5).ToList();
+            return postList;
+        }
     }
 }

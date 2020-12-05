@@ -15,6 +15,7 @@ using Moon_.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using Moon_.Entities;
 
 namespace Moon.Controllers
 {
@@ -22,18 +23,21 @@ namespace Moon.Controllers
     public class HomeController : Controller
     {
         private readonly StudentContext _context;
-        private UserManager<Student> _userManager;
-        private SignInManager<Student> _signInManager;
+        private UserManager<IdentityUser> _userManager;
+        private SignInManager<IdentityUser> _signInManager;
         private IEmailSender _emailSender;
+        private RoleManager<IdentityRole> _roleManager;
 
         readonly JsonDataHelper _dataHelper = new JsonDataHelper();
 
-        public HomeController(StudentContext context, UserManager<Student> userManager, SignInManager<Student> signInManager, IEmailSender emailSender)
+        public HomeController(StudentContext context, UserManager<IdentityUser> userManager, 
+            SignInManager<IdentityUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index(string sortOrder, string currentFilter, string SearchCode, int? pageNumber, string GroupValue)
@@ -105,53 +109,6 @@ namespace Moon.Controllers
             return Json(SelectedCategories);
         }
 
-
-  /*      public IActionResult Index(string sortOrder,string currentFilter,string SearchCode,int? pageNumber)
-        {
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["CurrentFilter"] = SearchCode;
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-            var posts = from s in _context.Files
-                           select s;
-            switch (sortOrder)
-            {
-                case "Date":
-                    posts = posts.OrderBy(s => s.CreatedOn);
-                    break;
-                case "date_desc":
-                    posts = posts.OrderByDescending(s => s.CreatedOn);
-                    break;
-                default:
-                    posts = posts.OrderByDescending(s => s.CreatedOn);
-                    break;
-            }
-           /* if (!String.IsNullOrEmpty(SearchCode) && !String.IsNullOrEmpty(SearchGroup))
-            {
-                posts = posts.Where(s => s.CourseCode.Contains(SearchCode) && s.Category.Contains(SearchGroup));
-            }
-            if (!String.IsNullOrEmpty(SearchCode))
-            {
-                posts = posts.Where(s => s.CourseCode.Contains(SearchCode));
-            }
-            if (SearchCode != null)
-            {
-                pageNumber = 1;
-            }
-            else
-            {
-                SearchCode = currentFilter;
-            }
-            // giris yapilip yapilmamasina gore sayfa sekil alacak
-            var obj = HttpContext.Session.GetObject<Student>("student");
-            if (obj != null)
-            {
-                return RedirectToAction("Index", "Student");
-            }
-            int pageSize = 8;
-            return View(posts.ToPagedList(pageNumber ?? 1, pageSize));
-            // table contextinin kullanilabilmesi için yukarıda olusturulan nesne kullanıldı
-        } */
-
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -211,7 +168,7 @@ namespace Moon.Controllers
             return View(model);
         }
 
-        public IActionResult Add()
+        public IActionResult Register()
         {
             ViewData["Message"] = "Your add page";
 
@@ -219,7 +176,7 @@ namespace Moon.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(Student student)
+        public async Task<IActionResult> Register(Student student)
         {
             RegisterViewModel model = new RegisterViewModel();
             if (ModelState.IsValid)
@@ -239,6 +196,7 @@ namespace Moon.Controllers
                 var check = await _userManager.CreateAsync(user, student.Password);
                 if (check.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "Student");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var url = Url.Action("ConfirmEmail", "Home", new
                     {

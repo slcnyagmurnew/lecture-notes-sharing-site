@@ -1,0 +1,71 @@
+﻿@{ 
+    ViewData["Student Title"] = "Contact Us"; 
+}
+<h2>@ViewData["Student Title"]</h2>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .button-demo {
+            display: inline-block;
+        }
+
+        textarea {
+            resize: none;
+        }
+    </style>
+
+    <script>
+        function sendMail() {
+            var subjectField = document.getElementById("inputSuccess").value;
+            var emailField = document.getElementById("inputSuccess2").value;
+            var messageField = document.getElementById("inputSuccess3").value;
+            if (emailField != 0 && subjectField != 0 && messageField != 0) {
+                var ccPanel = "cc=" + escape(document.getElementById("contactform").querySelector('input[name="email"]').value);
+                var subjectPanel = "subject=" + escape(document.getElementById("contactform").querySelector('input[name="subject"]').value) + " ";
+                var messagePanel = "body=" + escape(document.getElementById("contactform").querySelector('textarea[name="message"]').value);
+                var mailto_link = 'mailto:ytunotpaylasim@hotmail.com?' + ccPanel + '&' + subjectPanel + '&' + messagePanel;
+                win = window.open(mailto_link, 'emailWindow');
+            }
+            else {
+                alert("Input fields can not be empty!");
+            }
+        }
+
+        function confirm_reset() {
+            return confirm("All textfields will be cleaned, are you sure?");
+        }
+    </script>
+
+</head>
+
+<body>
+    <form action="#" id="contactform" name="forms">
+        <p class="form-group" id="contact-name">
+            <label for="name">Subject</label>
+            <input type="text" name="subject" class="form-control name-contact" id="inputSuccess" placeholder="Subject..." required="" oninvalid="this.setCustomValidity('Please enter a subject.')"
+                   oninput="setCustomValidity('')" />
+        </p>
+
+        <p class="form-group" id="contact-email">
+            <label for="email">Your Email</label>
+            <input type="text" name="email" class="form-control email-contact" id="inputSuccess2" placeholder="Email..." required="" oninvalid="this.setCustomValidity('Please enter a email.')"
+                   oninput="setCustomValidity('')" />
+        </p>
+
+        <p class="form-group" id="contact-message">
+            <label for="message">Your Message</label>
+            <textarea name="message" cols="88" rows="13" class="form-control message-contact" id="inputSuccess3" placeholder="Message..." required="" oninvalid="this.setCustomValidity('Please enter your message.')"
+                      oninput="setCustomValidity('')"></textarea>
+        </p>
+        <input type="reset" name="reset" value="CLEAR" class="reset" onclick="return confirm_reset();" />
+
+        <section class="button-demo">
+            <button onclick="sendMail();">SEND MESSAGE</button>
+        </section>
+    </form>
+</body>
+
+</html>

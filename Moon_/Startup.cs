@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Moon.Entities;
 using Moon.Models;
 using Moon_.Models;
 
@@ -33,6 +32,8 @@ namespace Moon
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<StudentContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -64,17 +65,17 @@ namespace Moon
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.LoginPath = "/Home/Login";
+                options.LogoutPath = "/Home/Index";
+                options.AccessDeniedPath = "/Home/AccessDenied";
                 options.SlidingExpiration = true;
             });
 
-
-            services.AddIdentity<Student, IdentityRole>().AddEntityFrameworkStores<StudentContext>().AddDefaultTokenProviders();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var connection = @"Server=(localdb)\mssqllocaldb;Database=StudentDb;Trusted_Connection=true";
 
             services.AddDbContext<StudentContext>(options => options.UseSqlServer(connection));
+            services.AddHttpContextAccessor();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
@@ -117,6 +118,9 @@ namespace Moon
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "student",
+                    template: "{controller=Student}/{action=Index}/{id?}");
             });
         }
     }
