@@ -1,15 +1,108 @@
-﻿
+﻿@model IEnumerable<Moon.Entities.Files>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    Layout = null;
+    ViewData["Admin Title"] = "Home Page Admin";
 }
+@addTagHelper *, ReflectionIT.Mvc.Paging
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/AdminStyles/css/index.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Index</title>
 </head>
 <body>
+    <!-- !PAGE CONTENT! -->
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="column-down">
+                <form asp-action="Index" method="post">
+                    <div class="wrapper">
+                        <div class="form-group col-sm-2">
+                            <div class="row">
+                                <label class="control-label">Search for Course</label>
+                            </div>
+                            <div class="row">
+                                @Html.DropDownList("CourseCodeDrop", ViewBag.CourseCode as SelectList, htmlAttributes: new { @class = "form-control ", @id = "courseSec" })
+                            </div>
+                            <div class="row">
+                                <input name="GroupValue" accesskey="GroupValue" id="GroupValue" placeholder="search a category number.." />
+                            </div>
+                            <div class="form-actions row">
+                                <input value="Search" type="submit" class="btn btn-info" />
+                            </div>
+                            <div class="row" style="float:right">
+                                <a asp-action="Index">Back to Full List</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="column">
+            <table id="dtable" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr class="table-striped" style="background-color:aliceblue">
+                        <th>Title</th>
+                        <th>Course</th>
+                        <th>Lecturer</th>
+                        <th>Owner</th>
+                        <th><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Date</a></th>
+                        <th>Like</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="table-condensed">
+                            <td class="tab-content">
+                                <a asp-action="DisplayPDF">@Html.DisplayFor(modelItem => item.Title)</a>
+                            </td>
+                            <td class="tab-content">
+                                <a>@Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)</a>
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.Lecturer)
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.ownerId)
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                            <td class="tab-content">
+                                @Html.DisplayFor(modelItem => item.Likes)
+                            </td>
+                            <td>
+                                <a asp-action="DisplayPDF" asp-route-id="@item.DocumentId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.DocumentId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+            </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+            </a>
+        </div>
+    </div>
+    <script>
+        function myFunction(x) {
+            x.classList.toggle("fa-thumbs-down");
+        }
+    </script>
 </body>
 </html>

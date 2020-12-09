@@ -120,6 +120,9 @@ namespace Moon
                 routes.MapRoute(
                     name: "student",
                     template: "{controller=Student}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "admin",
+                    template: "{controller=Admin}/{action=Index}/{id?}");
             });
         }
     }

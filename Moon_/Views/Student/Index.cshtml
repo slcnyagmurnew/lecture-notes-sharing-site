@@ -23,9 +23,9 @@
 
     <!-- !PAGE CONTENT! -->
     <div class="row">
-        <div class="column" style="background-color:#aaa;">
+        <div class="column">
             <div class="card">
-                <div class="card-header" style="background-color:cornflowerblue">
+                <div class="card-header" style="background-color: lavender">
                     Welcome
                     <label>@HttpContextAccessor.HttpContext.User.Identity.Name<Student></label>
                 </div>
@@ -95,10 +95,10 @@
     @using (Html.BeginForm())
     {
     <div class="row">
-        <div class="column-down" style="background-color:#ddd;">
+        <div class="column-down">
             <form asp-action="Index" method="post">
                 <div class="wrapper">
-                    <div class="form-group col-sm-2">
+                    <div class="form-group">
                         <div class="row">
                             <label class="control-label">Search for Course</label>
                         </div>
@@ -109,26 +109,29 @@
                             <input name="GroupValue" accesskey="GroupValue" id="GroupValue" placeholder="search a category number.." />
                         </div>
                         <div class="form-actions row">
-                            <input value="Search" type="submit" class="btn btn-default" />
+                            <input value="Search" type="submit" class="btn btn-info"/>
                         </div>
-                        <div class="row" style="float:right">
+                        <div class="row" style="float: left">
                             <a asp-action="Index">Back to Full List</a>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="column-down" style="background-color:#ddd">
+        <div class="column-down">
+            <div class="row">
+                <label class="control-label">Your Favorites</label>
+            </div>
             <table id="ftable" class="table table-striped table-hover table-bordered">
                 <thead>
-                    <tr class="table-striped" style="background-color:cornflowerblue">
+                    <tr class="table-striped" style="background-color: aliceblue">
                         <th>Title</th>
                         <th>Course</th>
                         <th>Owner</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(var item in Model._FavoriteList)
+                    @foreach (var item in Model._FavoriteList)
                     {
                         <tr class="table-condensed">
                             <td class="tab-content">

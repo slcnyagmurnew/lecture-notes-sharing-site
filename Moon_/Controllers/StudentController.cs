@@ -68,7 +68,7 @@ namespace Moon.Controllers
             {
                 SearchCode = currentFilter;
             }
-            int pageSize = 8;
+            int pageSize = 10;
 
             ViewBag.CourseCode = new SelectList(_dataHelper.GetDict().Keys.ToList());
 
@@ -102,7 +102,7 @@ namespace Moon.Controllers
 
             return View();
         }
-
+        // gerekli degil 
         public JsonResult CourseCategoryDrop(string id)
         {
             
@@ -115,10 +115,13 @@ namespace Moon.Controllers
             return Json(SelectedCategories);
         }
 
-        public IActionResult LogOut(string id)
+        public IActionResult LogOut()
         {
-            // alert = logged out successfully
-            HttpContext.Session.Clear();
+            foreach(var cookie in Request.Cookies.Keys)
+            {
+                if (cookie == ".AspNetCore.Session" || cookie == ".AspNetCore.Identity.Application")
+                    Response.Cookies.Delete(cookie);
+            }
             return RedirectToAction("Index","Home");
         }
         // dokuman sifreleme icin, random degerler, filesta documentId ve poststa id ayni

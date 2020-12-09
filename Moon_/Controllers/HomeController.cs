@@ -77,7 +77,7 @@ namespace Moon.Controllers
             {
                 SearchCode = currentFilter;
             }
-            int pageSize = 8;
+            int pageSize = 10;
 
             ViewBag.CourseCode = new SelectList(_dataHelper.GetDict().Keys.ToList());
             var obj = HttpContext.Session.GetObject<Student>("student");
@@ -154,21 +154,27 @@ namespace Moon.Controllers
                     ModelState.AddModelError("", "Please confirm your account.");
                     return View(model);
                 }
+                var result = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, student.Password);
 
-                var result = await _signInManager.PasswordSignInAsync(user, student.Password, false, false);
-
-                if (result.Succeeded)
+                if(result == PasswordVerificationResult.Success)
                 {
+                    await _signInManager.PasswordSignInAsync(user, student.Password, false, false);
                     var bytes = Encoding.UTF8.GetBytes(student.Id);
                     HttpContext.Session.Set("id", bytes);
 
                     var bytes2 = Encoding.UTF8.GetBytes(student.Password);
                     HttpContext.Session.Set("password", bytes2);
 
+                    if(await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        HttpContext.Session.SetObject("admin", student);
+                        return RedirectToAction("Index", "Admin");
+                    }
                     HttpContext.Session.SetObject("student", student);
                     return RedirectToAction("Index", "Student");
                 }
             }
+            
             ModelState.AddModelError("", "Username or password invalid");
             return View(model);
         }
@@ -194,7 +200,6 @@ namespace Moon.Controllers
                     UserName = student.Id,
                     Department = student.Department,
                     Email = student.Email,
-                    Password = student.Password,
                     EmailConfirmed = false
                 };
 

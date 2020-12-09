@@ -10,6 +10,7 @@ namespace Moon.Entities
     {
         public string Name { get; set; }
         public string Surname { get; set; }
+        [NotMapped]
         public string Password { get; set; }
         public string Department { get; set; }
     }

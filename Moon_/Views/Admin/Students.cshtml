@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Moon.Entities.Student>
+@{
+    ViewData["Admin Title"] = "Student List Page Admin";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/AdminStyles/css/studentsList.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Students</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+    <div class="row">
+        <div class="column-down">
+            <form asp-action="Index" method="post">
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label">Search for Student</label>
+                        <input name="id" accesskey="username" id="username" placeholder="search a student username.." />
+                        <input asp-action="Students" value="Search" type="submit" class="btn btn-info" />
+                        <a asp-action="Students">Back to Full List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    }
+    <div class="row">
+        <table id="dtable" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr class="table-striped" style="background-color:aliceblue">
+                    <th>User Name</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="table-condensed">
+                        <td class="tab-content">
+                            <a asp-action="DisplayStudent" asp-route-id="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
+                        </td>
+                        <td class="tab-content">
+                            <a>@Html.DisplayFor(modelItem => item.Name)</a>
+                        </td>
+                        <td class="tab-content">
+                            @Html.DisplayFor(modelItem => item.Surname)
+                        </td>
+                        <td class="tab-content">
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td class="tab-content">
+                            @Html.DisplayFor(modelItem => item.Department)
+                        </td>
+                        <td>
+                            <a asp-action="DeleteStudent" asp-route-id="@item.UserName">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
