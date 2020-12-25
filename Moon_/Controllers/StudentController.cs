@@ -288,6 +288,11 @@ namespace Moon.Controllers
             return Redirect("Create");
         }
 
+        public IActionResult Calendar()
+        {
+            return View();
+        }
+
         public IActionResult Delete(string id)
         {
             // alert gerek

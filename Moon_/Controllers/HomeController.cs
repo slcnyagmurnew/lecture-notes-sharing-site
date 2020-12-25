@@ -128,6 +128,11 @@ namespace Moon.Controllers
             return View();
         }
 
+        private bool isNullOrEmpty(string str)
+        {
+            return str == null || str.Equals("");
+        }
+
         public IActionResult Login()
         {
             ViewData["Message"] = "Your login page";
@@ -238,6 +243,11 @@ namespace Moon.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Calendar()
+        {
+            return View();
         }
 
         public async Task<ActionResult> ConfirmEmail(string userId, string token)

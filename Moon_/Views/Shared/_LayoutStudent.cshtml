@@ -36,7 +36,11 @@
                     <li><a asp-area="" asp-controller="Student" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Student" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Student" asp-action="MyCourses">My Courses</a></li>
+                    <li><a asp-area="" asp-controller="Student" asp-action="Calendar">Academic Calendar</a></li>
                     <li><a asp-area="" asp-controller="Student" asp-action="LogOut">Log Out</a></li>
+                    <li>
+                        <label style="color: aliceblue; margin-top: 12px; margin-left: 330px;">Welcome, @HttpContextAccessor.HttpContext.User.Identity.Name<Student></label>
+                    </li>
                 </ul>
             </div>
         </div>

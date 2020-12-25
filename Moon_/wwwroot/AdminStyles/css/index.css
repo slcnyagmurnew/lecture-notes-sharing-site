@@ -18,14 +18,22 @@ input {
     width: 200px;
 }
 
-    input[type=submit] {
-        border: none;
-        border-radius: 4px;
-        width: 100px;
-        height: 30px;
-        margin-bottom: 10px;
-    }
+.col-xs-2{
+    margin-right: 5px;
+}
+
+input[type=submit] {
+    border: none;
+    border-radius: 4px;
+    width: 100px;
+    height: 30px;
+    margin-bottom: 10px;
+}
 
 #dtable {
     width: 100%;
+}
+
+#courseSec{
+    width: 200px;
 }

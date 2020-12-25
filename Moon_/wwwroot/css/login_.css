@@ -25,7 +25,7 @@ input[type=password] {
     width: 210px;
 }
 input[type=submit] {
-    margin-left: 130px;
+    margin-left: 120px;
 }
 
 input[type=button] {
@@ -33,6 +33,5 @@ input[type=button] {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    float: right;
-    margin: 20px 14px 10px;
+    margin-left: 35px;
 }

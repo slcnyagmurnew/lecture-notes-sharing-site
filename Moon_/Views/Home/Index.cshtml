@@ -10,138 +10,141 @@
 <html>
 <head runat="server">
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="~/HomeStyles/css/index.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
         function preventBack() { window.history.forward(); }
         setTimeout("preventBack()", 0);
         window.onunload = function () { null };
     </script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 
     <!-- !PAGE CONTENT! -->
     <div class="row">
-        <div class="column">
-            <table id="dtable" class="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr class="table-striped" style="background-color:aliceblue">
-                        <th>Title</th>
-                        <th>Course</th>
-                        <th>Lecturer</th>
-                        <th>Owner</th>
-                        <th><a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Date</a></th>
-                        <th>Like</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model._PaginatedList)
-                    {
-                        <tr class="table-condensed">
-                            <td class="tab-content">
-                                <a asp-action="Login">@Html.DisplayFor(modelItem => item.Title)</a>
-                            </td>
-                            <td class="tab-content">
-                                <a>@Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)</a>
-                            </td>
-                            <td class="tab-content">
-                                @Html.DisplayFor(modelItem => item.Lecturer)
-                            </td>
-                            <td class="tab-content">
-                                @Html.DisplayFor(modelItem => item.ownerId)
-                            </td>
-                            <td class="tab-content">
-                                @Html.DisplayFor(modelItem => item.CreatedOn)
-                            </td>
-                            <td class="tab-content">
-                                @Html.DisplayFor(modelItem => item.Likes)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            @{
-                var prevDisabled = !Model._PaginatedList.HasPreviousPage ? "disabled" : "";
-                var nextDisabled = !Model._PaginatedList.HasNextPage ? "disabled" : "";
-            }
-
-            <a asp-action="Index"
-               asp-route-sortOrder="@ViewData["CurrentSort"]"
-               asp-route-pageNumber="@(Model._PaginatedList.PageNumber - 1)"
-               asp-route-currentFilter="@ViewData["CurrentFilter"]"
-               class="btn btn-default @prevDisabled">
-                Previous
-            </a>
-            <a asp-action="Index"
-               asp-route-sortOrder="@ViewData["CurrentSort"]"
-               asp-route-pageNumber="@(Model._PaginatedList.PageNumber + 1)"
-               asp-route-currentFilter="@ViewData["CurrentFilter"]"
-               class="btn btn-default @nextDisabled">
-                Next
-            </a>
-        </div>
-    </div>
-    @using (Html.BeginForm())
-    {
-    <div class="row">
-        <div class="column-down">
-            <form asp-action="Index" method="post">
-                <div class="wrapper">
-                    <div class="form-group col-sm-2">
-                        <div class="row">
-                            <label class="control-label">Search for Course</label>
-                        </div>
-                        <div class="row">
-                            @Html.DropDownList("CourseCodeDrop", ViewBag.CourseCode as SelectList, htmlAttributes: new { @class = "form-control ", @id = "courseSec" })
-                        </div>
-                        <div class="row">
-                            <input name="GroupValue" accesskey="GroupValue" id="GroupValue" placeholder="search a category number.." />
-                        </div>
-                        <div class="form-actions row">
-                            <input value="Search" type="submit" class="btn btn-default" />
-                        </div>
-                        <div class="row" style="float:right">
-                            <a asp-action="Index">Back to Full List</a>
+        <img src="~/StudentStyles/images/ytu-photo.png" />
+            <div class="column-down">
+                <form asp-action="Index" method="post">
+                    <div class="wrapper">
+                        <div class="form-group col-sm-2">
+                            <div class="row">
+                                @Html.DropDownList("CourseCodeDrop", ViewBag.CourseCode as SelectList, htmlAttributes: new { @class = "form-control ", @id = "courseSec" })
+                            </div>
+                            <div class="row">
+                                <input name="GroupValue" accesskey="GroupValue" id="GroupValue" placeholder="search a category number.." />
+                            </div>
+                            <div class="form-actions row">
+                                <input value="Search" type="submit" class="btn btn-primary" />
+                            </div>
+                            <div class="row">
+                                <a asp-action="Index">Back to Full List</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-        <div class="column-down">
-            <table id="ftable" class="table table-striped table-hover table-bordered">
-                <thead>
-                    <tr class="table-striped" style="background-color:aliceblue">
-                        <th>Title</th>
-                        <th>Course</th>
-                        <th>Owner</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model._FavoriteList)
-                    {
-                        <tr class="table-condensed">
-                            <td class="tab-content">
-                                <a asp-action="Login" asp-route-id="@item.DocumentId">@Html.DisplayFor(modelItem => item.Title)</a>
-                            </td>
-                            <td class="tab-content">
-                                <a>@Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)</a>
-                            </td>
-                            <td class="tab-content">
-                                @Html.DisplayFor(modelItem => item.ownerId)
-                            </td>
+        <div class="row">
+            <div class="column">
+                <table id="dtable" class="table table-striped table-hover">
+                    <thead>
+                        <tr style="background-color:steelblue" class="table-striped">
+                            <th>Title</th>
+                            <th>Course</th>
+                            <th>Lecturer</th>
+                            <th>Owner</th>
+                            <th><a style="color: black" asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Date</a></th>
+                            <th>Like</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model._PaginatedList)
+                        {
+                            <tr class="table-condensed">
+                                <td class="tab-content">
+                                    <a asp-action="Login">@Html.DisplayFor(modelItem => item.Title)</a>
+                                </td>
+                                <td class="tab-content">
+                                    <a>@Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)</a>
+                                </td>
+                                <td class="tab-content">
+                                    @Html.DisplayFor(modelItem => item.Lecturer)
+                                </td>
+                                <td class="tab-content">
+                                    @Html.DisplayFor(modelItem => item.ownerId)
+                                </td>
+                                <td class="tab-content">
+                                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                                </td>
+                                <td class="tab-content">
+                                    @Html.DisplayFor(modelItem => item.Likes)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @{
+                    var prevDisabled = !Model._PaginatedList.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model._PaginatedList.HasNextPage ? "disabled" : "";
+                }
+
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model._PaginatedList.PageNumber - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-primary @prevDisabled">
+                    Previous
+                </a>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model._PaginatedList.PageNumber + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-primary @nextDisabled">
+                    Next
+                </a>
+            </div>
         </div>
-    </div>
-    }
-    <script>
-        function myFunction(x) {
-            x.classList.toggle("fa-thumbs-down");
+        @using (Html.BeginForm())
+        {
+            <div class="row">
+                <div class="column-down">
+                    <div class="row">
+                        <label class="control-label">Your Favorites</label>
+                    </div>
+                    <table id="ftable" class="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr style="background-color: lightseagreen" class="table-striped">
+                                <th>Title</th>
+                                <th>Course</th>
+                                <th>Owner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model._FavoriteList)
+                            {
+                                <tr class="table-condensed">
+                                    <td class="tab-content">
+                                        <a asp-action="Login" asp-route-id="@item.DocumentId">@Html.DisplayFor(modelItem => item.Title)</a>
+                                    </td>
+                                    <td class="tab-content">
+                                        <a>@Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)</a>
+                                    </td>
+                                    <td class="tab-content">
+                                        @Html.DisplayFor(modelItem => item.ownerId)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         }
-    </script>
+        <script>
+            function myFunction(x) {
+                x.classList.toggle("fa-thumbs-down");
+            }
+        </script>
 </body>
 </html>

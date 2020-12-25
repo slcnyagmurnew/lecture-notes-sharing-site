@@ -23,21 +23,19 @@
         <div class="row">
             <div class="column-down">
                 <form asp-action="Index" method="post">
-                    <div class="wrapper">
-                        <div class="form-group col-sm-2">
-                            <div class="row">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-2 col-sm-2">
                                 <label class="control-label">Search for Course</label>
                             </div>
-                            <div class="row">
+                            <div style="margin-top: 8px;" class="col-xs-2">
                                 @Html.DropDownList("CourseCodeDrop", ViewBag.CourseCode as SelectList, htmlAttributes: new { @class = "form-control ", @id = "courseSec" })
                             </div>
-                            <div class="row">
+                            <div class="col-xs-2">
                                 <input name="GroupValue" accesskey="GroupValue" id="GroupValue" placeholder="search a category number.." />
                             </div>
-                            <div class="form-actions row">
+                            <div class="col-xs-3">
                                 <input value="Search" type="submit" class="btn btn-info" />
-                            </div>
-                            <div class="row" style="float:right">
                                 <a asp-action="Index">Back to Full List</a>
                             </div>
                         </div>

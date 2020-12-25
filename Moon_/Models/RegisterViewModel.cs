@@ -36,6 +36,7 @@ namespace Moon_.Models
 
         [Required(ErrorMessage = "Please enter your e-mail address.")]
         [EmailAddress]
+        //[RegularExpression("^(l[0-9]{7})@(std.yildiz.edu.tr)$", ErrorMessage = "Please enter your YTU email address.")]
         [Display(Name = "E-mail")]
         public string email { get; set; }
 

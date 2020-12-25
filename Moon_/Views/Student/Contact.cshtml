@@ -29,13 +29,6 @@
                 var mailto_link = 'mailto:ytunotpaylasim@hotmail.com?' + ccPanel + '&' + subjectPanel + '&' + messagePanel;
                 win = window.open(mailto_link, 'emailWindow');
             }
-            else {
-                alert("Input fields can not be empty!");
-            }
-        }
-
-        function confirm_reset() {
-            return confirm("All textfields will be cleaned, are you sure?");
         }
     </script>
 
@@ -60,7 +53,6 @@
             <textarea name="message" cols="88" rows="13" class="form-control message-contact" id="inputSuccess3" placeholder="Message..." required="" oninvalid="this.setCustomValidity('Please enter your message.')"
                       oninput="setCustomValidity('')"></textarea>
         </p>
-        <input type="reset" name="reset" value="CLEAR" class="reset" onclick="return confirm_reset();" />
 
         <section class="button-demo">
             <button onclick="sendMail();">SEND MESSAGE</button>
