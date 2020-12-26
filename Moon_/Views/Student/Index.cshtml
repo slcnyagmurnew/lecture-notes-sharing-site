@@ -23,7 +23,7 @@
 
     <!-- !PAGE CONTENT! -->
     <div class="row">
-        <img src="~/StudentStyles/images/ytu-photo.png" />
+        <img id="ytu-photo" src="~/StudentStyles/images/ytu-photo.png" />
         <div class="column-down">
             <form asp-action="Index" method="post">
                 <div class="wrapper">
@@ -56,6 +56,7 @@
                         <th>Owner</th>
                         <th><a style="color: black" asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Date</a></th>
                         <th>Like</th>
+                        <th>#</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,7 +64,7 @@
                     {
                         <tr class="table-condensed">
                             <td class="tab-content">
-                                <a asp-action="Login">@Html.DisplayFor(modelItem => item.Title)</a>
+                                <a asp-action="DisplayPDF" asp-route-id="@item.DocumentId">@Html.DisplayFor(modelItem => item.Title)</a>
                             </td>
                             <td class="tab-content">
                                 <a>@Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)</a>
@@ -79,6 +80,9 @@
                             </td>
                             <td class="tab-content">
                                 @Html.DisplayFor(modelItem => item.Likes)
+                            </td>
+                            <td class="tab-content">
+                                <a asp-action="LikeAct" asp-route-id="@item.DocumentId"><img id="like-icon" src="~/StudentStyles/images/like.svg" /></a>
                             </td>
                         </tr>
                     }
@@ -114,7 +118,7 @@
             </div>
             <table id="ftable" class="table table-striped table-hover table-bordered">
                 <thead>
-                    <tr class="table-striped" style="background-color: lightseagreen">
+                    <tr class="table-striped" style="background-color: steelblue">
                         <th>Title</th>
                         <th>Course</th>
                         <th>Owner</th>
@@ -146,17 +150,5 @@
             x.classList.toggle("fa-thumbs-down");
         }
     </script>
-   <!-- <script>
-        function sendRequest() {
-            var selectedCourse = $('#courseSec').val();
-            //var selectedCategory = $('#category').val();
-            $.ajax({
-                url: '/Student/Index?SearchCode=' + selectedCourse, // + '&SearchGroup=' + selectedCategory,
-                type: "POST",
-                dataType: "JSON",
-                data: { SearchCode: selectedCourse }
-            });
-        }
-    </script>-->
 </body>
 </html>

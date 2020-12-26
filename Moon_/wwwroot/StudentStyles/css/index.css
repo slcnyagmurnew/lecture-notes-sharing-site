@@ -1,4 +1,4 @@
-﻿img {
+﻿#ytu-photo {
     margin-top: 40px;
     width: 200px;
     float: right;
@@ -62,4 +62,8 @@ input[type=submit] {
 
 #ftable {
     width: 500px;
+    border-collapse: separate;
+    border: solid black 1px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
 }
