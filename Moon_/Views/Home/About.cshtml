@@ -1,11 +1,382 @@
 ﻿@{
     ViewData["Title"] = "About";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
-<ul>
-    <li>This is first</li>
-    <li>This is second</li>
-</ul>
 
-<p>Use this area to provide additional information.</p>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>About</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        function openTab(evt, cityName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        function recommendBook() {
+            var empty = "";
+            var books = ["Elon Musk: Tesla SpaceX ve Muhteşem Geleceğin Peşinde - Ashlee Vance",
+                "Aradığın Her Şey: Jeff Bezos ve Amazon Çağı - Brad Stone",
+                "Geleceği Gören Makineler - Ajay Agrawal, Joshua Gans, Avi Goldfard",
+                "Robotların Yükselişi - Martin Ford",
+                "50 Soruda Yapay Zeka - Cem Say",
+                "Tasarım, Teknoloji, İş ve Yaşamda Başarı İçin Liderliği Yeniden Tasarlamak – Becky Bermont, John Maeda",
+                "Google Sırları - Laszlo Bock",
+                "Küçük Başlayın, Büyük Düşünün - Steve Jobs",
+                "Sokrates'le Bir Akşam Yemeği - Steve Jobs ",
+                "Dijital Ruh: İnsan ve Teknoloji Arasındaki Yaratıcı Ortaklık - Edward Ashford Lee",
+                "Su Adamı - Aleksandr Belyaev",
+                "Tanrı Olmak Zor İş - Arkadi Strugatski",
+                "Dune Çocukları - Frank Herbert",
+                "Ben Robot - Isaac Asimov",
+                "Sürgün Gezegeni - Ursula K. Le Guin",
+                "Zaman Makinesi - H. G. Wells",
+                "Karanlığın Sol Eli - Ursula K. Le Guin",
+                "İskandinav Mitolojisi - Neil Gaiman",
+                "Kadınlar Ülkesi - Charlotte Perkins Gilman",
+                "Warcross: Bir Sanal Gerçeklik Oyunu - Marie Lu",
+                "Andromeda Nebulası - Ivan Yefremov"];
+            var book = books[Math.floor(Math.random() * books.length)];
+            empty = empty + book;
+            document.getElementById("textlabel").value = empty;
+        }
+    </script>
+    <style type="text/css">
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .tab {
+            float: left !important;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            width: 100px;
+            height: 595px;
+            text-align: center;
+            position: relative;
+        }
+
+            .tab button {
+                text-align: center;
+                display: block;
+                background-color: #CDD8E7;
+                color: black;
+                padding: 22px 16px;
+                width: 100%;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                transition: 0.3s;
+                display: inline-block;
+                position: relative;
+                height: 25%;
+            }
+
+                .tab button:hover {
+                    background-color: #B1DBE0;
+                }
+
+                .tab button.active {
+                    background-color: #BFBEAD;
+                }
+
+        .tabcontent {
+            float: left;
+            padding: 0px 12px;
+            border: 1px solid #ccc;
+            width: 70%;
+            height: 595px;
+            background-color: #CDD8E7;
+        }
+
+        .tabCenter {
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            margin-top: 5%;
+            margin-bottom: 1%;
+        }
+
+        .blueH {
+            color: rgb(0, 98, 255);
+            font-size: 40px;
+            text-align: center;
+            color: #4682b4;
+        }
+
+        .profilInfo1 {
+            width: 50%;
+        }
+
+        .kutu {
+            width: 100%;
+            height: 40%;
+            border: blue solid 1px;
+            display: inline-block;
+        }
+
+        .whatMe {
+            width: 60%;
+            height: 95%;
+            border: black solid 1px;
+            margin: 5px;
+            display: inline-flex;
+        }
+
+        .value {
+            text-align: right;
+            float: right;
+            overflow: hidden;
+        }
+
+
+        .what {
+            font: inherit;
+            vertical-align: baseline;
+            margin: 5%;
+            padding: 0;
+            list-style: none;
+        }
+
+        *, *:before, *:after {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        #fafa {
+            font-size: 48px;
+            color: black;
+        }
+
+        #textlabel {
+            width: 100%;
+            height: 15%;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            background: #4682b4;
+            border: 4px solid black;
+        }
+
+        #middle {
+            display: block;
+            margin: 0 auto;
+            font-size: 60px;
+            color: #4682b4;
+            background-color: #CDD8E7;
+        }
+
+        #rbr {
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            border: 3px solid black;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            font-weight: bold;
+        }
+
+
+        #table1 tr:first-child {
+            background: #4682b4;
+        }
+
+        tr:nth-child(even) {
+            background-color: white;
+        }
+
+        tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        #xxx {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 3%;
+        }
+
+        .xy {
+            margin-top: 8%;
+            height: %20px;
+            width: 100%;
+            background-color: #4682b4;
+            border: 3px solid black;
+        }
+
+        .xz {
+            margin-top: 2%;
+            height: %20px;
+            width: 100%;
+            background-color: #4682b4;
+            border: 3px solid black;
+        }
+
+        #fafaprofile {
+            font-size: 50px;
+            width: 20%;
+        }
+
+        .fafamargin {
+            margin-left: 4%;
+        }
+
+        #plusfafa {
+            color: grey;
+        }
+
+        #iconfafa {
+            font-size: 30px;
+        }
+
+        #righto {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tabCenter">
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'what')" id="defaultOpen"><i class="fa fa-question-circle" aria-hidden="true" id="fafa"></i></button>
+            <button class="tablinks" onclick="openTab(event, 'who')"><i class="fa fa-users" aria-hidden="true" id="fafa"></i></button>
+            <button class="tablinks" onclick="openTab(event, 'bookGen')"><i class="fa fa-book" aria-hidden="true" id="fafa"></i></button>
+            <button class="tablinks" onclick="openTab(event,'usefulLink')"><i class="fa fa-link" aria-hidden="true" id="fafa"></i></button>
+        </div>
+
+        <div id="what" class="tabcontent">
+            <h3 class="blueH"><i class="fa fa-plus" aria-hidden="true" id="plusfafa"></i>&nbsp;WHAT IS YTUNOTPAYLASIM.COM?</h3>
+            <hr>
+            <div class="xy">
+                <p id="xxx">YTUNotpaylasim is a web site created for YTU students with easy access to their lecture notes and useful course videos required for the courses. Uploaded notes can be distinguished by the number of likes. Students can access the lecture notes, slides, homeworks, projects, example questions for exams, uploaded to the website by typing the code of the course they want. There is also a book suggestions section on the website.</p>
+            </div>
+        </div>
+
+        <div id="who" class="tabcontent" style="display: none;">
+            <h3 class="blueH"><i class="fa fa-plus" aria-hidden="true" id="plusfafa"></i>&nbsp;WHO ARE WE?</h3>
+            <hr>
+            <div class="xz">
+                <p id="xxx">We are computer engineering students in Yildiz Technical University (YTU). We have developed this website as a semester project for BLM3580 System Programming course.</p>
+            </div>
+            <br>
+            <div>
+                <table id="table1">
+                    <br>
+                    <tr>
+                        <th id="righto">NAME</th>
+                        <th id="righto">CONTACT</th>
+                    </tr>
+                    <tr>
+                        <th id="righto">Selcan Yağmur Atak</th>
+                        <th id="righto"><a href="https://www.linkedin.com/in/selcan-yağmur-atak-240058171/" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true" id="iconfafa"></i></a> <a href="https://github.com/slcnyagmurnew" target="_blank"><i class="fa fa-github-square" aria-hidden="true" id="iconfafa"></i></a></th>
+                    </tr>
+                    <tr>
+                        <th id="righto">Metin Binbir</th>
+                        <th id="righto"><a href="https://www.linkedin.com/in/metinbinbir/" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true" id="iconfafa"></i></a> <a href="https://github.com/metinbinbir" target="_blank"><i class="fa fa-github-square" id="iconfafa" aria-hidden="true"></i></a></th>
+                    </tr>
+                    <tr>
+                        <th id="righto">Aslı Şeyda Özdemir</th>
+                        <th id="righto"><a href="https://www.linkedin.com/in/aslı-şeyda-özdemir-9a122a174/" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true" id="iconfafa"></i></a> <a href="https://github.com/asliseydaozdemir" target="_blank"><i class="fa fa-github-square" id="iconfafa" aria-hidden="true"></i></a></th>
+                    </tr>
+                    <tr>
+                        <th id="righto">Sıla Alpay</th>
+                        <th id="righto"><a href="https://www.linkedin.com/in/sıla-alpay-2847201a0/" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true" id="iconfafa"></i></a> <a href="https://github.com/slaalpay" target="_blank"><i class="fa fa-github-square" id="iconfafa" aria-hidden="true"></i></a></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="bookGen" class="tabcontent" style="display: none;">
+            <h3 class="blueH"><i class="fa fa-plus" aria-hidden="true" id="plusfafa"></i>&nbsp;RANDOM BOOK RECOMMENDER</h3>
+            <hr>
+            <p id="rbr">By clicking button below, our website will recommend a book for you!</p>
+            <br>
+            <br>
+            <button type="button" id="middle" onclick="recommendBook()"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+            <br>
+            <br>
+            <br>
+            <input type="text" id="textlabel" name="country" value="" readonly>
+        </div>
+        <div id="usefulLink" class="tabcontent" style="display: none;">
+            <h3 class="blueH"><i class="fa fa-plus" aria-hidden="true" id="plusfafa"></i>&nbsp;USEFUL LECTURE VIDEOS LINKS</h3>
+            <hr>
+            <table id="table1">
+                <tr>
+                    <th id="righto">LECTURE</th>
+                    <th id="righto">LINK</th>
+                </tr>
+                <tr>
+                    <td id="righto">MAT2411 Differantial Equations</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=XDhJ8lVGbl8&list=PLEC88901EBADDD980" target="_blank">MIT</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">MAT1071 Calculus I</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=7K1sB05pE0A&list=PL590CCC2BC5AF3BC1" target="_blank">MIT</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">MAT1072 Calculus II</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=GxdAMWkrN3U&list=PL5B3KLQNAC5iFplC0GyNnO-bu4_ToFrwJ" target="_blank">Bilkent</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">MAT1320 Linear Algebra</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=7UJ4CFRGd-U&list=PLE7DDD91010BC51F8" target="_blank">MIT</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">FIZ1001 Pyhsics I</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=aI30Nim4moY&list=PL5B3KLQNAC5hKpC6tNJk3kyo6Qi3zqJNp" target="_blank">Bilkent</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">FIZ1002 Pyhsics II</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=rtlJoXxlSFE&list=PLyQSN7X0ro2314mKyUiOILaOC2hk6Pc3j" target="_blank">MIT</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">KIM1170 General Chemistry</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=5yw1YH7YA7c&list=PL0o_zxa4K1BV-uX6wXQgyqZXvRd0tUUV0" target="_blank">MIT</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">Probability and Statistics</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=KbB0FjPg0mw&list=PL2SOU6wwxB0uwwH80KTQ6ht66KWxbzTIo" target="_blank">Harvard</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">Numerical Methods</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=zT83sJ5IrEE&list=PLyqSpQzTE6M-QT7PvEBHV0iNMvZk9mocO" target="_blank">NPTEL-NOC IITM</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">Introduction to Programming with Python</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=nykOeWgQcHM&list=PLUl4u3cNGP63WbdFxL8giv4yhgdMGaZNA" target="_blank">MIT</a></td>
+                </tr>
+                <tr>
+                    <td id="righto">Principles of Microeconomics</td>
+                    <td id="righto"><a href="https://www.youtube.com/watch?v=Vss3nofHpZI&list=PL61533C166E8B0028" target="_blank">MIT</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
