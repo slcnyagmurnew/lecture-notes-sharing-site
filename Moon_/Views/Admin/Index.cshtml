@@ -18,6 +18,21 @@
 </head>
 <body>
     <!-- !PAGE CONTENT! -->
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible">
+            @TempData["success"]
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        </div>
+    }
+
+    @if (ViewData["error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible">
+            @ViewData["error"]
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        </div>
+    }
     @using (Html.BeginForm())
     {
         <div class="row">
@@ -62,7 +77,7 @@
                     {
                         <tr class="table-condensed">
                             <td class="tab-content">
-                                <a asp-action="DisplayPDF">@Html.DisplayFor(modelItem => item.Title)</a>
+                                <a asp-action="DisplayPDF" asp-route-id="@item.DocumentId">@Html.DisplayFor(modelItem => item.Title)</a>
                             </td>
                             <td class="tab-content">
                                 <a>@Html.DisplayFor(modelItem => item.CourseCode)-@Html.DisplayFor(modelItem => item.Category)</a>

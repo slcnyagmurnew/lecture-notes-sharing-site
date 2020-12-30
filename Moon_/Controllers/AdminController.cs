@@ -183,13 +183,22 @@ namespace Moon_.Controllers
 
         public IActionResult Delete(string id)
         {
-            // alert gerek
             var post = (from s in _context.Files
                         where s.DocumentId.Equals(id)
                         select s).FirstOrDefault<Files>();
             _context.Files.Remove(post);
             _context.SaveChanges();
+            TempData["success"] = "File deleted successfully!";
             return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteStudent(string id)
+        {
+            var student = (from s in _context.Students where s.Id.Equals(id) select s).FirstOrDefault<Student>();
+            _context.Students.Remove(student);
+            _context.SaveChanges();
+            TempData["success"] = "User deleted successfully!";
+            return RedirectToAction("Students");
         }
 
         public IActionResult Students()
@@ -204,8 +213,8 @@ namespace Moon_.Controllers
             var student = (from s in _context.Students where s.Id.Equals(id) select s).ToList();
             if(student.Count == 0)
             {
-                // bulunamadı alert
-                return RedirectToAction("Students");
+                ViewData["error"] = "User does not exist, please enter a valid username!";
+                return View(student);
             }
             return View(student);
         }
